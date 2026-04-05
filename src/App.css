@@ -1,0 +1,175 @@
+.app-container {
+  min-height: 100vh;
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 1rem;
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  animation: headerFadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes headerFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo-wrapper {
+  position: relative;
+  width: 16rem;
+  max-width: 100%;
+  margin-bottom: 0.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: logoFloat 4s ease-in-out infinite, logoGlow 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(191, 67, 150, 0.15));
+}
+
+@keyframes logoFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes logoGlow {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px rgba(191, 67, 150, 0.15));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 12px rgba(191, 67, 150, 0.3));
+  }
+}
+
+.logo-wrapper img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, #ffffff, rgba(255, 255, 255, 0.6));
+  margin-bottom: 0.5rem;
+  margin-top: 0;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 3rem;
+  }
+}
+
+.bio {
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+.main-content {
+  width: 100%;
+}
+
+.play-button {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 0.5rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  margin-top: 0.75rem;
+}
+
+.play-button:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.footer {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.bento-link-wrapper {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.glow-card-base {
+  border-radius: 1rem;
+  position: relative;
+  box-shadow: 0 1rem 2rem -1rem black;
+  padding: 1rem;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* === Spinning Vinyl Disc === */
+@keyframes vinylSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.vinyl-spin {
+  animation: vinylSpin 4s linear infinite;
+  transition: animation-duration 0.5s ease;
+  line-height: 0;
+}
+
+a.group:hover .vinyl-spin,
+.bento-col-span-2:hover .vinyl-spin {
+  animation-duration: 1s;
+}
