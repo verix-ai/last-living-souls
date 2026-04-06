@@ -137,9 +137,6 @@ function App() {
                 <div className="feature-copy">
                   <span className="card-badge">Latest Release</span>
                   <h2>Should&apos;ve Known</h2>
-                  <p>
-                    Start here. Swirling keys, haunted hooks, and just enough neon pressure to pull the whole page off-axis.
-                  </p>
                 </div>
 
                 <div className="feature-meta" aria-label="Available on major platforms">

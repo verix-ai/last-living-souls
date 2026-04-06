@@ -209,7 +209,7 @@
 
 .feature-art {
   position: relative;
-  min-height: 8rem;
+  min-height: 9.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -224,8 +224,8 @@
 }
 
 .feature-ring-1 {
-  width: 9.4rem;
-  height: 9.4rem;
+  width: 10.2rem;
+  height: 10.2rem;
   border-color: rgba(221, 122, 226, 0.36);
   box-shadow:
     0 0 0 10px rgba(135, 58, 148, 0.1),
@@ -237,8 +237,8 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 9rem;
-  height: 9rem;
+  width: 9.8rem;
+  height: 9.8rem;
   border-radius: 50%;
   background:
     radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.7), transparent 16%),
@@ -257,8 +257,8 @@
 
 .feature-record {
   display: block;
-  width: 8.4rem;
-  height: 8.4rem;
+  width: 9.15rem;
+  height: 9.15rem;
   object-fit: contain;
 }
 
@@ -293,21 +293,14 @@
 .feature-card h2 {
   font-size: clamp(2rem, 4vw, 3rem);
   line-height: 0.96;
-  margin-bottom: 0.6rem;
-}
-
-.feature-card p {
-  max-width: 32rem;
-  color: rgba(236, 243, 255, 0.72);
-  font-size: 0.98rem;
-  line-height: 1.6;
+  margin-bottom: 0;
 }
 
 .feature-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
-  margin-top: 1rem;
+  margin-top: 0.6rem;
 }
 
 .feature-meta span {
@@ -331,6 +324,12 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   box-shadow: 0 14px 32px rgba(255, 127, 193, 0.35);
+}
+
+@media (min-width: 768px) {
+  .feature-card .play-button {
+    display: none;
+  }
 }
 
 .platform-card {
@@ -493,41 +492,53 @@ a.group:hover .vinyl-spin,
   }
 
   .feature-card {
-    min-height: 32rem;
+    min-height: 30.5rem;
     padding: 1.15rem;
+    justify-content: flex-start;
     align-items: center;
     text-align: center;
+    gap: 0.9rem;
   }
 
   .feature-art {
-    min-height: 12.25rem;
+    min-height: 15rem;
   }
 
   .feature-ring-1 {
-    width: 12rem;
-    height: 12rem;
+    width: 12.75rem;
+    height: 12.75rem;
     box-shadow:
       0 0 0 12px rgba(135, 58, 148, 0.08),
       0 0 36px rgba(208, 93, 197, 0.24);
   }
 
   .feature-disc-shell {
-    width: 11.25rem;
-    height: 11.25rem;
+    width: 12rem;
+    height: 12rem;
   }
 
   .feature-record {
-    width: 10.35rem;
-    height: 10.35rem;
+    width: 11.1rem;
+    height: 11.1rem;
   }
 
   .feature-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
     text-align: center;
+    margin-top: 0.35rem;
+  }
+
+  .feature-copy .card-badge {
+    margin-bottom: 0;
   }
 
   .feature-card h2 {
     font-size: 1.8rem;
     line-height: 1;
+    margin-bottom: 0;
     overflow-wrap: anywhere;
   }
 
@@ -540,11 +551,13 @@ a.group:hover .vinyl-spin,
 
   .feature-meta {
     justify-content: center;
-    margin-top: 0.85rem;
+    gap: 0.45rem;
+    margin-top: 0;
   }
 
   .play-button {
     width: 100%;
+    margin-top: 0.15rem;
     justify-content: center;
     text-align: center;
   }
