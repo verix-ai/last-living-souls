@@ -38,6 +38,25 @@ const GlowCard: React.FC<GlowCardProps> = ({
     const innerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        const card = cardRef.current;
+        if (!card) return;
+
+        const centerSpotlight = () => {
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty('--x', (rect.width / 2).toFixed(2));
+            card.style.setProperty('--y', (rect.height / 2).toFixed(2));
+            card.style.setProperty('--xp', '0.5');
+            card.style.setProperty('--yp', '0.5');
+        };
+
+        centerSpotlight();
+
+        const prefersHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        if (!prefersHover) {
+            window.addEventListener('resize', centerSpotlight);
+            return () => window.removeEventListener('resize', centerSpotlight);
+        }
+
         const syncPointer = (e: PointerEvent) => {
             const { clientX: x, clientY: y } = e;
 
@@ -50,7 +69,12 @@ const GlowCard: React.FC<GlowCardProps> = ({
         };
 
         document.addEventListener('pointermove', syncPointer);
-        return () => document.removeEventListener('pointermove', syncPointer);
+        window.addEventListener('resize', centerSpotlight);
+
+        return () => {
+            document.removeEventListener('pointermove', syncPointer);
+            window.removeEventListener('resize', centerSpotlight);
+        };
     }, []);
 
     const { base, spread } = glowColorMap[glowColor];
@@ -88,7 +112,7 @@ const GlowCard: React.FC<GlowCardProps> = ({
             backgroundAttachment: 'fixed',
             border: 'var(--border-size) solid var(--backup-border)',
             position: 'relative' as const,
-            touchAction: 'none' as const,
+            touchAction: 'auto' as const,
         };
 
         // Add width and height if provided
