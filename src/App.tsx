@@ -1,124 +1,185 @@
+import type { ReactNode } from 'react';
 import { BentoGrid } from './components/BentoGrid';
 import { GlowCard } from './components/ui/spotlight-card';
-import { FaSpotify, FaApple, FaInstagram, FaYoutube, FaDiscord, FaFacebook, FaTiktok } from 'react-icons/fa';
-import { SiYoutubemusic } from 'react-icons/si';
-import { GiCompactDisc } from 'react-icons/gi';
+import PatternShader from './components/ui/pattern-shader';
 import './index.css';
 import './App.css';
 
+type GlowColor = 'blue' | 'purple' | 'green' | 'red' | 'orange';
+
+type LinkCard = {
+  title: string;
+  subtitle: string;
+  href: string;
+  glowColor: GlowColor;
+  imageSrc?: string;
+  icon?: ReactNode;
+};
+
+const linkCards: LinkCard[] = [
+  {
+    title: 'Spotify',
+    subtitle: 'Full catalog and latest release',
+    href: 'https://open.spotify.com/artist/05uIqoMvFedhpbcsIwPwjL?si=gq3lTXQvQ0-RhmPnZCt_sA',
+    glowColor: 'green',
+    imageSrc: '/icons/spotify_3d.png',
+  },
+  {
+    title: 'Apple Music',
+    subtitle: 'Late-night rotation approved',
+    href: 'https://music.apple.com/us/album/shouldve-known-single/1841186018',
+    glowColor: 'red',
+    imageSrc: '/icons/apple_music_3d.png',
+  },
+  {
+    title: 'YT Music',
+    subtitle: 'Headphones and volume required',
+    href: 'https://music.youtube.com/channel/UCIoBtX7x4GEFGdAHT1ELF1Q?si=Rgov6mxi07tzRotq',
+    glowColor: 'red',
+    imageSrc: '/icons/yt_music_3d.png',
+  },
+  {
+    title: 'Discord',
+    subtitle: 'Join the orbit and hang out',
+    href: 'https://discord.com',
+    glowColor: 'blue',
+    imageSrc: '/icons/discord_3d.png',
+  },
+  {
+    title: 'Facebook',
+    subtitle: 'Announcements, drops, and shows',
+    href: 'https://www.facebook.com/LastLivingSouls.music',
+    glowColor: 'blue',
+    imageSrc: '/icons/facebook_3d.png',
+  },
+  {
+    title: 'Instagram',
+    subtitle: 'Studio haze and visual chaos',
+    href: 'https://www.instagram.com/lastlivingsouls.music',
+    glowColor: 'orange',
+    imageSrc: '/icons/ig_3d.png',
+  },
+  {
+    title: 'TikTok',
+    subtitle: 'Clips, riffs, and live fragments',
+    href: 'https://www.tiktok.com/@lastlivingsouls.music',
+    glowColor: 'blue',
+    imageSrc: '/icons/tiktok_3d.png',
+  },
+  {
+    title: 'YouTube',
+    subtitle: 'Videos, shorts, and live cuts',
+    href: 'https://youtube.com',
+    glowColor: 'red',
+    imageSrc: '/icons/youtube.png',
+  },
+];
+
 function App() {
+  const renderCardIcon = (card: LinkCard) => {
+    if (card.imageSrc) {
+      return <img src={card.imageSrc} alt="" className="platform-sticker" loading="lazy" />;
+    }
+
+    return <div className="platform-glyph">{card.icon}</div>;
+  };
+
   return (
-    <div className="app-container">
-      {/* Profile Header */}
-      <header className="header">
-        <div className="logo-wrapper">
-          <img src="/logo.svg" alt="Last Living Souls Logo" />
+    <>
+      <div className="scene-backdrop" aria-hidden="true">
+        <div className="scene-base-glow" />
+        <div className="scene-shader-frame">
+          <PatternShader
+            className="scene-shader"
+            gridSpacing={0.72}
+            animationSpeed={0.55}
+            rotationSpeed={0.018}
+            paletteA={[0.09, 0.07, 0.13]}
+            paletteB={[0.16, 0.1, 0.2]}
+            paletteC={[0.74, 0.56, 0.38]}
+            paletteD={[0.67, 0.2, 0.58]}
+            ariaLabel="Subtle psychedelic interference background"
+          />
         </div>
-        <p className="bio">
-          Listen to our latest Single "Should've Known"
-        </p>
-      </header>
+        <div className="scene-wash" />
+      </div>
 
-      <main className="main-content">
-        <BentoGrid>
+      <div className="app-container">
+        <header className="header">
+          <div className="header-halo" aria-hidden="true" />
+          <div className="logo-wrapper">
+            <img src="/logo.svg" alt="Last Living Souls Logo" />
+          </div>
+          <p className="bio">
+            Fuzzed-out riffs, midnight keys, and a custom link hub that feels more like stepping into the trip than tapping a bio page.
+          </p>
+        </header>
 
-          {/* Main Feature - 2x2 */}
-          <a href="https://open.spotify.com/track/6h5yX5qxLx8IW2afIuMXt7?si=9ee2fab29a4a43c8&nd=1&dlsi=c6b7f8599aae4d41" target="_blank" rel="noopener noreferrer" className="bento-col-span-2 bento-row-span-2 block group" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <GlowCard className="w-full h-full flex flex-col items-center justify-center text-center !grid-rows-none" customSize glowColor="purple">
-              <div className="bento-icon-wrapper bento-icon-wrapper-dynamic" style={{ '--hover-color': 'var(--color-magenta)' } as any}>
-                <div className="vinyl-spin">
-                  <GiCompactDisc size={100} />
+        <main className="main-content">
+          <BentoGrid className="psychedelic-grid">
+            <a
+              href="https://open.spotify.com/track/6h5yX5qxLx8IW2afIuMXt7?si=9ee2fab29a4a43c8&nd=1&dlsi=c6b7f8599aae4d41"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bento-col-span-2 bento-row-span-2 link-card block group"
+            >
+              <GlowCard className="psychedelic-card feature-card w-full h-full !grid-rows-none" customSize glowColor="purple">
+                <div className="card-noise" aria-hidden="true" />
+                <div className="feature-art" aria-hidden="true">
+                  <span className="feature-ring feature-ring-1" />
+                  <div className="feature-disc-shell">
+                    <div className="vinyl-spin feature-disc">
+                      <img src="/icons/record_3d.png" alt="" className="feature-record" loading="eager" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <h2>Latest Release</h2>
-              <p>Stream "Should've Known"</p>
-              <button className="play-button" style={{ marginTop: '1rem' }}>
-                <span>Play Now</span>
-              </button>
-            </GlowCard>
-          </a>
 
-          {/* Music Platforms - 1x1 */}
-          <a href="https://open.spotify.com/artist/05uIqoMvFedhpbcsIwPwjL?si=gq3lTXQvQ0-RhmPnZCt_sA" target="_blank" rel="noopener noreferrer" className="bento-col-span-1 bento-row-span-1 block group" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <GlowCard className="w-full h-full flex flex-col items-center justify-center text-center !grid-rows-none" customSize glowColor="green">
-              <div className="bento-icon-wrapper bento-icon-wrapper-dynamic" style={{ '--hover-color': '#1DB954' } as any}>
-                <FaSpotify size={50} />
-              </div>
-              <h3>Spotify</h3>
-            </GlowCard>
-          </a>
+                <div className="feature-copy">
+                  <span className="card-badge">Latest Release</span>
+                  <h2>Should&apos;ve Known</h2>
+                  <p>
+                    Start here. Swirling keys, haunted hooks, and just enough neon pressure to pull the whole page off-axis.
+                  </p>
+                </div>
 
-          <a href="https://music.apple.com" target="_blank" rel="noopener noreferrer" className="bento-col-span-1 bento-row-span-1 block group" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <GlowCard className="w-full h-full flex flex-col items-center justify-center text-center !grid-rows-none" customSize glowColor="red">
-              <div className="bento-icon-wrapper bento-icon-wrapper-dynamic" style={{ '--hover-color': '#FA243C' } as any}>
-                <FaApple size={50} />
-              </div>
-              <h3>Apple Music</h3>
-            </GlowCard>
-          </a>
+                <div className="feature-meta" aria-label="Available on major platforms">
+                  <span>Spotify</span>
+                  <span>Apple Music</span>
+                  <span>YT Music</span>
+                </div>
 
-          <a href="https://music.youtube.com" target="_blank" rel="noopener noreferrer" className="bento-col-span-1 bento-row-span-1 block group" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <GlowCard className="w-full h-full flex flex-col items-center justify-center text-center !grid-rows-none" customSize glowColor="red">
-              <div className="bento-icon-wrapper bento-icon-wrapper-dynamic" style={{ '--hover-color': '#FF0000' } as any}>
-                <SiYoutubemusic size={50} />
-              </div>
-              <h3>YT Music</h3>
-            </GlowCard>
-          </a>
+                <span className="play-button">Enter The Stream</span>
+              </GlowCard>
+            </a>
 
-          {/* Socials & Community - 1x1 */}
-          <a href="https://discord.com" target="_blank" rel="noopener noreferrer" className="bento-col-span-1 bento-row-span-1 block group" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <GlowCard className="w-full h-full flex flex-col items-center justify-center text-center !grid-rows-none" customSize glowColor="blue">
-              <div className="bento-icon-wrapper bento-icon-wrapper-dynamic" style={{ '--hover-color': 'var(--color-blue)' } as any}>
-                <FaDiscord size={50} />
-              </div>
-              <h3>Discord</h3>
-            </GlowCard>
-          </a>
+            {linkCards.map((card) => (
+              <a
+                key={card.title}
+                href={card.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bento-col-span-1 bento-row-span-1 link-card block group"
+              >
+                <GlowCard className="psychedelic-card platform-card w-full h-full !grid-rows-none" customSize glowColor={card.glowColor}>
+                  <div className="card-noise" aria-hidden="true" />
+                  <div className="platform-icon-shell">
+                    {renderCardIcon(card)}
+                  </div>
+                  <div className="platform-copy">
+                    <h3>{card.title}</h3>
+                    <p>{card.subtitle}</p>
+                  </div>
+                </GlowCard>
+              </a>
+            ))}
+          </BentoGrid>
+        </main>
 
-          <a href="https://www.facebook.com/LastLivingSouls.music" target="_blank" rel="noopener noreferrer" className="bento-col-span-1 bento-row-span-1 block group" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <GlowCard className="w-full h-full flex flex-col items-center justify-center text-center !grid-rows-none" customSize glowColor="blue">
-              <div className="bento-icon-wrapper bento-icon-wrapper-dynamic" style={{ '--hover-color': '#1877F2' } as any}>
-                <FaFacebook size={50} />
-              </div>
-              <h3>Facebook</h3>
-            </GlowCard>
-          </a>
-
-          <a href="https://www.instagram.com/lastlivingsouls.music" target="_blank" rel="noopener noreferrer" className="bento-col-span-1 bento-row-span-1 block group" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <GlowCard className="w-full h-full flex flex-col items-center justify-center text-center !grid-rows-none" customSize glowColor="orange">
-              <div className="bento-icon-wrapper bento-icon-wrapper-dynamic" style={{ '--hover-color': '#E1306C' } as any}>
-                <FaInstagram size={50} />
-              </div>
-              <h3>Instagram</h3>
-            </GlowCard>
-          </a>
-
-          <a href="https://www.tiktok.com/@lastlivingsouls.music" target="_blank" rel="noopener noreferrer" className="bento-col-span-1 bento-row-span-1 block group" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <GlowCard className="w-full h-full flex flex-col items-center justify-center text-center !grid-rows-none" customSize glowColor="blue">
-              <div className="bento-icon-wrapper bento-icon-wrapper-dynamic" style={{ '--hover-color': '#00f2fe' } as any}>
-                <FaTiktok size={50} />
-              </div>
-              <h3>TikTok</h3>
-            </GlowCard>
-          </a>
-
-          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="bento-col-span-1 bento-row-span-1 block group" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <GlowCard className="w-full h-full flex flex-col items-center justify-center text-center !grid-rows-none" customSize glowColor="red">
-              <div className="bento-icon-wrapper bento-icon-wrapper-dynamic" style={{ '--hover-color': '#FF0000' } as any}>
-                <FaYoutube size={50} />
-              </div>
-              <h3>YouTube</h3>
-            </GlowCard>
-          </a>
-
-        </BentoGrid>
-      </main>
-
-      <footer className="footer">
-        © {new Date().getFullYear()} Last Living Souls. All Rights Reserved.
-      </footer>
-    </div>
+        <footer className="footer">
+          © {new Date().getFullYear()} Last Living Souls. Stay loud.
+        </footer>
+      </div>
+    </>
   );
 }
 

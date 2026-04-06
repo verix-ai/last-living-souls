@@ -1,23 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@500;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* Extracted Colors */
-  --color-purple: rgb(97, 31, 125);
-  --color-blue: rgb(6, 23, 126);
-  --color-magenta: rgb(191, 67, 150);
-  --color-peach: rgb(232, 139, 120);
+  --color-purple: rgb(107, 52, 203);
+  --color-blue: rgb(34, 122, 255);
+  --color-magenta: rgb(236, 94, 179);
+  --color-peach: rgb(255, 184, 118);
+  --color-acid: rgb(202, 255, 95);
 
-  --bg-color: #020202;
-  --card-bg: rgba(255, 255, 255, 0.03);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --card-hover-bg: rgba(255, 255, 255, 0.06);
+  --bg-color: #050311;
+  --card-bg: rgba(255, 255, 255, 0.06);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --card-hover-bg: rgba(255, 255, 255, 0.1);
 
   --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.6);
+  --text-secondary: rgba(233, 241, 255, 0.72);
 }
 
 * {
@@ -27,15 +27,19 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   background-color: var(--bg-color);
   color: var(--text-primary);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-image: radial-gradient(circle at 50% 0%, rgba(97, 31, 125, 0.1), transparent 50%),
-    radial-gradient(circle at 100% 100%, rgba(6, 23, 126, 0.06), transparent 50%);
+  background-image:
+    radial-gradient(circle at 12% 12%, rgba(255, 132, 200, 0.15), transparent 28%),
+    radial-gradient(circle at 88% 18%, rgba(54, 220, 255, 0.12), transparent 25%),
+    radial-gradient(circle at 48% 82%, rgba(201, 255, 99, 0.07), transparent 26%),
+    linear-gradient(180deg, #0a0716, #050311 36%, #03020d 100%);
   background-attachment: fixed;
+  overflow-x: hidden;
 }
 
 h1,
@@ -44,25 +48,25 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Syne', sans-serif;
 }
 
 /* Base Bento Grid */
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: 120px;
-  gap: 0.75rem;
+  grid-auto-rows: 132px;
+  gap: 1rem;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 0.75rem;
+  padding: 0.9rem;
 }
 
 @media (min-width: 768px) {
   .bento-grid {
     grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 150px;
+    grid-auto-rows: 172px;
   }
 }
 
@@ -147,4 +151,23 @@ h6 {
 
 .bento-grid>*:nth-child(9) {
   animation-delay: 0.66s;
+}
+
+@media (max-width: 767px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+    gap: 0.85rem;
+    padding: 0.8rem;
+  }
+
+  .bento-col-span-1,
+  .bento-col-span-2,
+  .bento-col-span-3,
+  .bento-col-span-4,
+  .bento-row-span-1,
+  .bento-row-span-2 {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
 }

@@ -1,6 +1,51 @@
+.scene-backdrop {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.scene-base-glow {
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(236, 94, 179, 0.12), transparent 20%),
+    radial-gradient(circle at 80% 16%, rgba(83, 214, 255, 0.1), transparent 18%),
+    radial-gradient(circle at 50% 74%, rgba(255, 184, 118, 0.08), transparent 24%);
+  filter: blur(10px);
+}
+
+.scene-shader-frame {
+  position: absolute;
+  inset: 14vh 12vw auto;
+  height: 52vh;
+  min-height: 18rem;
+  border-radius: 999px;
+  overflow: hidden;
+  opacity: 0.42;
+  filter: blur(18px) saturate(0.85);
+  mask-image: radial-gradient(circle at center, black 34%, rgba(0, 0, 0, 0.86) 58%, transparent 88%);
+}
+
+.scene-shader {
+  position: absolute;
+  inset: 0;
+  transform: scale(1.18);
+}
+
+.scene-wash {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 22%, rgba(255, 255, 255, 0.045), transparent 16%),
+    radial-gradient(circle at 50% 34%, rgba(236, 94, 179, 0.08), transparent 24%),
+    linear-gradient(180deg, rgba(5, 3, 17, 0.18), rgba(5, 3, 17, 0.68) 58%, rgba(5, 3, 17, 0.84));
+}
+
 .app-container {
   min-height: 100vh;
-  padding: 0.5rem 0;
+  padding: 1rem 0 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,21 +54,35 @@
 }
 
 .header {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0 1rem;
+  width: min(100%, 54rem);
+  padding: 1.25rem 1.25rem 0.75rem;
   margin-bottom: 0.5rem;
   opacity: 0;
-  animation: headerFadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: headerFadeIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.header-halo {
+  position: absolute;
+  inset: auto 50% 2.5rem;
+  width: min(88vw, 34rem);
+  height: 11rem;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(217, 103, 185, 0.18), rgba(95, 229, 255, 0.04) 48%, transparent 72%);
+  filter: blur(20px);
+  z-index: -1;
 }
 
 @keyframes headerFadeIn {
   0% {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-18px);
   }
 
   100% {
@@ -34,18 +93,17 @@
 
 .logo-wrapper {
   position: relative;
-  width: 16rem;
+  width: min(18rem, 78vw);
   max-width: 100%;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.15rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: logoFloat 4s ease-in-out infinite, logoGlow 3s ease-in-out infinite;
-  filter: drop-shadow(0 0 6px rgba(191, 67, 150, 0.15));
+  animation: logoFloat 5s ease-in-out infinite, logoGlow 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(227, 103, 182, 0.22));
 }
 
 @keyframes logoFloat {
-
   0%,
   100% {
     transform: translateY(0);
@@ -57,14 +115,13 @@
 }
 
 @keyframes logoGlow {
-
   0%,
   100% {
-    filter: drop-shadow(0 0 6px rgba(191, 67, 150, 0.15));
+    filter: drop-shadow(0 0 10px rgba(227, 103, 182, 0.22));
   }
 
   50% {
-    filter: drop-shadow(0 0 12px rgba(191, 67, 150, 0.3));
+    filter: drop-shadow(0 0 24px rgba(104, 225, 255, 0.28));
   }
 }
 
@@ -74,102 +131,439 @@
   object-fit: contain;
 }
 
-.title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  background-image: linear-gradient(to right, #ffffff, rgba(255, 255, 255, 0.6));
-  margin-bottom: 0.5rem;
-  margin-top: 0;
-}
-
-@media (min-width: 768px) {
-  .title {
-    font-size: 3rem;
-  }
-}
-
 .bio {
   color: var(--text-secondary);
-  font-size: 1.125rem;
-  max-width: 28rem;
-  margin: 0 auto;
+  font-size: clamp(1rem, 2.6vw, 1.15rem);
+  line-height: 1.65;
+  max-width: 42rem;
+  margin: 0.4rem auto 0;
+  text-wrap: balance;
 }
 
 .main-content {
   width: 100%;
 }
 
-.play-button {
-  background-color: #ffffff;
-  color: #000000;
-  padding: 0.5rem 1.5rem;
-  border-radius: 9999px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.3s ease;
-  margin-top: 0.75rem;
-}
-
-.play-button:hover {
-  background-color: rgba(255, 255, 255, 0.9);
-}
-
-.footer {
-  margin-top: 1rem;
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.4);
-}
-
-.bento-link-wrapper {
+.link-card {
   display: block;
   width: 100%;
   height: 100%;
   text-decoration: none;
   color: inherit;
+  perspective: 1400px;
 }
 
-.glow-card-base {
-  border-radius: 1rem;
+.psychedelic-card.glow-card-base {
   position: relative;
-  box-shadow: 0 1rem 2rem -1rem black;
-  padding: 1rem;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  width: 100%;
-  height: 100%;
+  overflow: hidden;
+  border-radius: 26px;
+  padding: 1.15rem;
+  box-shadow:
+    0 28px 90px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  transform-style: preserve-3d;
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s ease,
+    border-color 0.4s ease;
+}
+
+.link-card:hover .psychedelic-card.glow-card-base {
+  transform: translateY(-10px) rotateX(7deg) rotateY(-5deg) scale(1.01);
+  box-shadow:
+    0 35px 110px rgba(0, 0, 0, 0.52),
+    0 0 48px rgba(255, 103, 200, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+.card-noise {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.1), transparent 30%),
+    radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.18), transparent 20%),
+    radial-gradient(circle at 85% 0%, rgba(111, 255, 233, 0.1), transparent 24%);
+  opacity: 0.9;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.feature-card,
+.platform-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  justify-content: space-between;
 }
 
-/* === Spinning Vinyl Disc === */
+.feature-card {
+  padding: 1.4rem;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03) 34%, rgba(255, 255, 255, 0.06)),
+    radial-gradient(circle at top right, rgba(255, 114, 194, 0.22), transparent 28%),
+    radial-gradient(circle at bottom left, rgba(86, 239, 255, 0.14), transparent 34%);
+}
+
+.feature-art {
+  position: relative;
+  min-height: 8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateZ(34px);
+}
+
+.feature-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 0 30px rgba(255, 119, 206, 0.12);
+}
+
+.feature-ring-1 {
+  width: 9.4rem;
+  height: 9.4rem;
+  border-color: rgba(221, 122, 226, 0.36);
+  box-shadow:
+    0 0 0 10px rgba(135, 58, 148, 0.1),
+    0 0 38px rgba(208, 93, 197, 0.26);
+  animation: orbitPulse 5.4s ease-in-out infinite;
+}
+
+.feature-disc-shell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 9rem;
+  height: 9rem;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.7), transparent 16%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.16), transparent 60%),
+    linear-gradient(140deg, rgba(196, 92, 208, 0.36), rgba(122, 67, 169, 0.26));
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.32),
+    0 18px 46px rgba(6, 9, 22, 0.44),
+    0 0 34px rgba(173, 76, 205, 0.2);
+}
+
+.feature-disc {
+  color: rgba(255, 255, 255, 0.92);
+  filter: drop-shadow(0 8px 18px rgba(255, 71, 188, 0.25));
+}
+
+.feature-record {
+  display: block;
+  width: 8.4rem;
+  height: 8.4rem;
+  object-fit: contain;
+}
+
+.feature-copy,
+.feature-meta,
+.play-button,
+.platform-icon-shell,
+.platform-copy {
+  transform: translateZ(28px);
+}
+
+.feature-copy {
+  text-align: left;
+}
+
+.card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.38rem 0.72rem;
+  border-radius: 999px;
+  margin-bottom: 0.85rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.feature-card h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 0.96;
+  margin-bottom: 0.6rem;
+}
+
+.feature-card p {
+  max-width: 32rem;
+  color: rgba(236, 243, 255, 0.72);
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.feature-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.feature-meta span {
+  padding: 0.42rem 0.76rem;
+  border-radius: 999px;
+  background: rgba(14, 18, 31, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.78rem;
+}
+
+.play-button {
+  align-self: flex-start;
+  margin-top: 1.15rem;
+  padding: 0.82rem 1.25rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255, 227, 178, 0.98), rgba(255, 118, 194, 0.92));
+  color: #150716;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0 14px 32px rgba(255, 127, 193, 0.35);
+}
+
+.platform-card {
+  align-items: flex-start;
+  padding: 1.1rem;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.04) 40%, rgba(255, 255, 255, 0.06)),
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 24%);
+}
+
+.platform-icon-shell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 4.85rem;
+  height: 4.85rem;
+  border-radius: 1.45rem;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.05)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 18px 28px rgba(0, 0, 0, 0.26);
+}
+
+.platform-icon-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0.35rem;
+  border-radius: 1.1rem;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), transparent 56%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.platform-sticker,
+.platform-glyph {
+  position: relative;
+  z-index: 1;
+}
+
+.platform-sticker {
+  width: 3.25rem;
+  height: 3.25rem;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28));
+}
+
+.platform-glyph {
+  color: rgba(255, 255, 255, 0.94);
+  filter: drop-shadow(0 8px 18px rgba(255, 135, 197, 0.18));
+}
+
+.platform-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.platform-card h3 {
+  font-size: 1.22rem;
+  line-height: 1;
+  margin-top: 0.9rem;
+}
+
+.platform-card p {
+  color: rgba(235, 241, 255, 0.66);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  max-width: 16ch;
+}
+
+.footer {
+  margin-top: 1.25rem;
+  padding: 0 1rem;
+  font-size: 0.84rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+}
+
 @keyframes vinylSpin {
-  0% {
+  from {
     transform: rotate(0deg);
   }
 
-  100% {
+  to {
     transform: rotate(360deg);
   }
 }
 
 .vinyl-spin {
-  animation: vinylSpin 4s linear infinite;
+  animation: vinylSpin 4.5s linear infinite;
   transition: animation-duration 0.5s ease;
   line-height: 0;
 }
 
 a.group:hover .vinyl-spin,
-.bento-col-span-2:hover .vinyl-spin {
-  animation-duration: 1s;
+.link-card:hover .vinyl-spin {
+  animation-duration: 1.4s;
+}
+
+@keyframes orbitPulse {
+  0%,
+  100% {
+    transform: scale(0.96);
+    opacity: 0.32;
+  }
+
+  50% {
+    transform: scale(1.04);
+    opacity: 0.72;
+  }
+}
+
+@media (max-width: 767px) {
+  .scene-shader-frame {
+    inset: 16vh 4vw auto;
+    height: 42vh;
+    opacity: 0.32;
+  }
+
+  .app-container {
+    padding-top: 0.75rem;
+  }
+
+  .header {
+    padding-inline: 0.95rem;
+  }
+
+  .bio {
+    max-width: 31rem;
+    font-size: 0.96rem;
+    line-height: 1.55;
+  }
+
+  .feature-card {
+    min-height: 32rem;
+    padding: 1.15rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  .feature-art {
+    min-height: 9.5rem;
+  }
+
+  .feature-ring-1 {
+    width: 8rem;
+    height: 8rem;
+    box-shadow:
+      0 0 0 8px rgba(135, 58, 148, 0.08),
+      0 0 28px rgba(208, 93, 197, 0.24);
+  }
+
+  .feature-disc-shell {
+    width: 7.5rem;
+    height: 7.5rem;
+  }
+
+  .feature-record {
+    width: 6.9rem;
+    height: 6.9rem;
+  }
+
+  .feature-copy {
+    text-align: center;
+  }
+
+  .feature-card h2 {
+    font-size: 1.8rem;
+    line-height: 1;
+    overflow-wrap: anywhere;
+  }
+
+  .feature-card p {
+    max-width: 27rem;
+    font-size: 0.94rem;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+  }
+
+  .feature-meta {
+    justify-content: center;
+    margin-top: 0.85rem;
+  }
+
+  .play-button {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .platform-card {
+    min-height: 8.75rem;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.05rem;
+  }
+
+  .platform-icon-shell,
+  .platform-copy {
+    transform: none;
+  }
+
+  .platform-icon-shell {
+    width: 4.2rem;
+    height: 4.2rem;
+    flex: 0 0 auto;
+  }
+
+  .platform-icon-shell::before {
+    inset: 0.3rem;
+  }
+
+  .platform-sticker {
+    width: 2.85rem;
+    height: 2.85rem;
+  }
+
+  .platform-copy {
+    flex: 1;
+    min-width: 0;
+    gap: 0.22rem;
+  }
+
+  .platform-card h3 {
+    margin-top: 0;
+    font-size: 1.05rem;
+  }
+
+  .platform-card p {
+    max-width: none;
+    font-size: 0.84rem;
+    overflow-wrap: anywhere;
+  }
 }
