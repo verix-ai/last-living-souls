@@ -12,6 +12,7 @@
   "dependencies": {
     "@paper-design/shaders-react": "^0.0.72",
     "@types/three": "^0.183.1",
+    "@vercel/analytics": "^2.0.1",
     "colorthief": "^3.3.1",
     "lucide-react": "^0.577.0",
     "node-vibrant": "^4.0.4",
