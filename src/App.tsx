@@ -111,7 +111,7 @@ function App() {
             <img src="/logo.svg" alt="Last Living Souls Logo" />
           </div>
           <p className="bio">
-            Fuzzed-out riffs, midnight keys, and a custom link hub that feels more like stepping into the trip than tapping a bio page.
+            Raw riffs, loud nights, and everything worth turning up for
           </p>
         </header>
 
