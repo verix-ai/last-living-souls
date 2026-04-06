@@ -478,18 +478,24 @@ a.group:hover .vinyl-spin,
   }
 
   .app-container {
-    padding-top: 0.25rem;
+    padding-top: 0.05rem;
   }
 
   .header {
-    padding: 0.35rem 0.95rem 0.55rem;
+    padding: 0.1rem 0.95rem 0.3rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .logo-wrapper {
+    width: min(15.75rem, 72vw);
+    margin-bottom: -0.35rem;
   }
 
   .bio {
     max-width: 31rem;
-    font-size: 0.96rem;
-    line-height: 1.55;
-    margin-top: -0.05rem;
+    font-size: 0.94rem;
+    line-height: 1.48;
+    margin-top: -0.12rem;
   }
 
   .feature-card {
