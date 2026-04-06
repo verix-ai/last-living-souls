@@ -45,7 +45,7 @@
 
 .app-container {
   min-height: 100vh;
-  padding: 1rem 0 2rem;
+  padding: 0.45rem 0 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,7 +61,7 @@
   justify-content: center;
   text-align: center;
   width: min(100%, 54rem);
-  padding: 1.25rem 1.25rem 0.75rem;
+  padding: 0.5rem 1.25rem 0.6rem;
   margin-bottom: 0.5rem;
   opacity: 0;
   animation: headerFadeIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
@@ -95,7 +95,7 @@
   position: relative;
   width: min(18rem, 78vw);
   max-width: 100%;
-  margin-bottom: 0.15rem;
+  margin-bottom: -0.2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -136,7 +136,7 @@
   font-size: clamp(1rem, 2.6vw, 1.15rem);
   line-height: 1.65;
   max-width: 42rem;
-  margin: 0.4rem auto 0;
+  margin: 0.1rem auto 0;
   text-wrap: balance;
 }
 
@@ -156,13 +156,16 @@
 .psychedelic-card.glow-card-base {
   position: relative;
   overflow: hidden;
+  isolation: isolate;
   border-radius: 26px;
+  clip-path: inset(0 round 26px);
   padding: 1.15rem;
   box-shadow:
     0 28px 90px rgba(0, 0, 0, 0.42),
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(18px) saturate(1.2);
   -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
   transform-style: preserve-3d;
   transition:
     transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
@@ -477,11 +480,11 @@ a.group:hover .vinyl-spin,
   }
 
   .app-container {
-    padding-top: 0.75rem;
+    padding-top: 0.25rem;
   }
 
   .header {
-    padding-inline: 0.95rem;
+    padding: 0.35rem 0.95rem 0.55rem;
   }
 
   .bio {
@@ -498,25 +501,25 @@ a.group:hover .vinyl-spin,
   }
 
   .feature-art {
-    min-height: 9.5rem;
+    min-height: 12.25rem;
   }
 
   .feature-ring-1 {
-    width: 8rem;
-    height: 8rem;
+    width: 12rem;
+    height: 12rem;
     box-shadow:
-      0 0 0 8px rgba(135, 58, 148, 0.08),
-      0 0 28px rgba(208, 93, 197, 0.24);
+      0 0 0 12px rgba(135, 58, 148, 0.08),
+      0 0 36px rgba(208, 93, 197, 0.24);
   }
 
   .feature-disc-shell {
-    width: 7.5rem;
-    height: 7.5rem;
+    width: 11.25rem;
+    height: 11.25rem;
   }
 
   .feature-record {
-    width: 6.9rem;
-    height: 6.9rem;
+    width: 10.35rem;
+    height: 10.35rem;
   }
 
   .feature-copy {

@@ -111,8 +111,13 @@ const GlowCard: React.FC<GlowCardProps> = ({
             backgroundPosition: '50% 50%',
             backgroundAttachment: 'fixed',
             border: 'var(--border-size) solid var(--backup-border)',
+            borderRadius: 'calc(var(--radius) * 1px)',
+            overflow: 'hidden' as const,
+            isolation: 'isolate' as const,
             position: 'relative' as const,
             touchAction: 'auto' as const,
+            WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+            WebkitBackfaceVisibility: 'hidden' as const,
         };
 
         // Add width and height if provided
