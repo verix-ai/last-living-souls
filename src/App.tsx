@@ -107,12 +107,12 @@ function App() {
       <div className="app-container">
         <header className="header">
           <div className="header-halo" aria-hidden="true" />
+          <div className="band-photo">
+            <img src="/LLS-1.jpg" alt="Last Living Souls band photo" />
+          </div>
           <div className="logo-wrapper">
             <img src="/logo.svg" alt="Last Living Souls Logo" />
           </div>
-          <p className="bio">
-            Raw riffs, loud nights, and everything worth turning up for
-          </p>
         </header>
 
         <main className="main-content">
