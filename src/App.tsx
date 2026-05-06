@@ -69,7 +69,7 @@ const linkCards: LinkCard[] = [
   {
     title: 'YouTube',
     subtitle: 'Videos, shorts, and live cuts',
-    href: 'https://youtube.com',
+    href: 'https://www.youtube.com/@band.lastlivingsouls',
     glowColor: 'red',
     imageSrc: '/icons/youtube.png',
   },
