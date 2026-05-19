@@ -172,6 +172,24 @@ function App() {
           </BentoGrid>
         </main>
 
+        <section className="bio-section" aria-label="About Last Living Souls">
+          <GlowCard className="psychedelic-card bio-card w-full !grid-rows-none" customSize glowColor="purple">
+            <div className="card-noise" aria-hidden="true" />
+            <div className="bio-copy">
+              <span className="card-badge">About The Band</span>
+              <p>
+                LAST LIVING SOULS is a Southern rock and soul-infused band from Georgia, blending gritty guitars, emotional songwriting, and powerful live energy into a modern Americana sound. Fronted by award-winning singer, songwriter, and producer Daniel NeSmith, the band combines roots rock, blues, psychedelic textures, and heartfelt storytelling, with influences ranging from classic Southern rock to alternative jam bands. Known for dynamic live performances and authentic musicianship, LAST LIVING SOULS delivers original music that connects deeply with audiences while keeping the spirit of real rock and roll alive.
+              </p>
+              <p>
+                The group was formed in 2025 and quickly began building momentum with the release of their first singles and a growing Southeast fan base. Members of the band bring years of touring, recording, and studio experience, creating a polished but raw sound that feels both timeless and fresh.
+              </p>
+              <p>
+                Whether performing intimate venues or larger festival stages, LAST LIVING SOULS aims to create an unforgettable experience rooted in passion, soul, and genuine human connection.
+              </p>
+            </div>
+          </GlowCard>
+        </section>
+
         <footer className="footer">
           © {new Date().getFullYear()} Last Living Souls. Stay loud.
         </footer>
