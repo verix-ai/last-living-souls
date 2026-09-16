@@ -51,3 +51,15 @@ No new analytics, account system, contact form, or backend was added. Existing o
 - Verified the astronaut is hidden with two collected stars and appears after collecting the third through the local browser UI.
 - Verified the completion message and 3/3 counter, mobile layout at 390 × 844, and astronaut visibility in still mode.
 - Inspected the final lineup with no visible names and Zane matching Drew’s overall height.
+
+## Current local direction
+
+Astronaut removed entirely from the rendered experience at the user’s request. Collecting all three stars now displays only the completion message; it never reveals an astronaut. The original image asset is retained for possible future reuse. Band travel and the Your Light star hunt remain. This change is local only.
+
+## Continuous-world rebuild
+
+See CONTINUOUS_WORLD.md for the current local landscape, layered movement, grounded character placement, generated assets, and verification. This replaces the separate chapter backgrounds. The astronaut remains removed and the three-star hunt remains available with its future reward undecided.
+
+## Local performance finale
+
+The last stretch of the journey now moves the same five travelers into a performance formation. Daniel has guitar and microphone, Drew bass, Norris congas (confirmed by the user), Zane keyboard, and Dan a drum kit on a rear riser. Code-native pixel instruments and speakers preserve the existing character artwork. Arrival is tied to scroll progress and reverses when leaving the finale; at the finish the band faces forward with small playing motions. Still mode and reduced-motion preferences disable playing animation. Verified at desktop and 390px mobile widths with no horizontal overflow; all five instruments appear at the finish. Three-star collection is unchanged. Local only.

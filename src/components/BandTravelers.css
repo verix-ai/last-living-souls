@@ -32,13 +32,10 @@
   transform-origin: center bottom;
 }
 .world.traveling .band-sprite {
-  animation: band-walk .36s steps(1, end) var(--step-delay) infinite;
+  background-position: calc(50% + var(--walk-step, 0) * 50%) 0;
 }
+.world.traveling .band-member:nth-child(even) .band-sprite { background-position: calc(100% - var(--walk-step, 0) * 50%) 0; }
 .world.traveling[data-direction="left"] .band-sprite { transform: scaleX(-1); }
-@keyframes band-walk {
-  0%, 100% { background-position: 50% 0; }
-  50% { background-position: 100% 0; }
-}
 .calm .band-travelers { position: fixed; }
 .calm .band-sprite { background-position: 0 0; transform: none !important; }
 
@@ -54,5 +51,47 @@
   .band-travelers { --band-size: 74px; bottom: 63px; left: 22%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .world.traveling .band-sprite { background-position: 0 0; transform: none; }
+  .world.traveling .band-member:nth-child(n) .band-sprite { background-position: 0 0; transform: none; }
+}
+
+/* Arrival: the traveling lineup opens into a small cosmic performance stage. */
+.band-travelers { width: calc(var(--band-size) * 3.55); }
+.band-member { flex: 0 0 20%; --stage-x: 0; --stage-y: 0; transform: translate(calc(var(--stage-arrival, 0) * var(--stage-x) * var(--band-size)), calc(var(--stage-arrival, 0) * var(--stage-y) * var(--band-size))); }
+.member-norris { --stage-x: -.3; z-index: 3; }
+.member-drew { --stage-x: -.16; z-index: 3; }
+.member-daniel { z-index: 4; }
+.member-dan { --stage-x: -.71; --stage-y: -.62; z-index: 1; }
+.member-zane { --stage-x: .15; z-index: 3; }
+.stage-instrument { position: absolute; width: calc(var(--band-size) * .86); height: auto; bottom: 0; overflow: visible; opacity: clamp(0, calc(var(--stage-arrival, 0) * 2 - 1), 1); transform: translateY(calc((1 - var(--stage-arrival, 0)) * 22px)); }
+.instrument-daniel, .instrument-drew { width: calc(var(--band-size) * .75); bottom: 0; }
+.instrument-drew { bottom: calc(var(--band-size) * .05); }
+.instrument-dan { width: calc(var(--band-size) * .96); bottom: calc(var(--band-size) * -.27); }
+.instrument-norris { width: calc(var(--band-size) * .83); }
+.instrument-zane { width: calc(var(--band-size) * 1.04); bottom: calc(var(--band-size) * -.02); }
+.drum-riser { position: absolute; width: calc(var(--band-size) * 1.18); height: calc(var(--band-size) * .62); bottom: calc(var(--band-size) * -.62); background: repeating-linear-gradient(90deg,#302138 0 12px,#412b48 12px 14px); border-top: 4px solid #c58aa6; box-shadow: inset 0 8px #21182e; opacity: var(--stage-arrival,0); z-index: -1; }
+.arrival-stage { position: absolute; z-index: 5; bottom: var(--ground-height); left: 50%; width: min(850px,96vw); height: 240px; pointer-events: none; opacity: var(--stage-arrival,0); transform: translateX(calc(-50% + (1 - var(--stage-arrival,0)) * 80vw)); }
+.stage-deck { position: absolute; left: 0; right: 0; bottom: -22px; height: 22px; background: repeating-linear-gradient(90deg,#291d35 0 35px,#45304b 35px 38px); border-top: 3px solid #e8b987; border-bottom: 4px solid #130f21; box-shadow: 0 5px #130f2166; }
+.stage-speaker { position: absolute; bottom: 0; width: 50px; height: 96px; background:#22192d; border:4px solid #5c405a; box-shadow: inset 0 0 0 3px #140e20; display:flex; flex-direction:column; align-items:center; justify-content:space-evenly; }
+.stage-speaker i { width:30px; height:30px; background:#110d1c; border:5px solid #3f324c; box-shadow:0 2px #927186; }
+.speaker-left { left: 10px; }.speaker-right { right: 10px; }
+.stage-beam { position:absolute; bottom:0; width:45%; height:100%; background:linear-gradient(0deg,#d28ead22,transparent); clip-path:polygon(0 0,20% 0,100% 100%,0 100%); }
+.beam-left { left:8%; }.beam-right { right:8%; transform:scaleX(-1); }
+.world[data-performing="true"] .band-member:nth-child(n) .band-sprite { background-position:0 0; transform:none; }
+.world[data-performing="true"] .strum-hand { animation: stage-strum .55s steps(2,end) infinite; }
+.world[data-performing="true"] .conga-hand,.world[data-performing="true"] .keys-hand,.world[data-performing="true"] .drumstick { animation: stage-tap .65s steps(2,end) infinite; }
+.world[data-performing="true"] .hand-right { animation-delay: -.325s; }
+@keyframes stage-strum { 50% { transform:translate(2px,3px); } }
+@keyframes stage-tap { 50% { transform:translateY(-4px); } }
+.calm .arrival-stage { position:fixed; }
+@media(max-width:600px) {
+  .arrival-stage { height:190px; width:98vw; }
+  .stage-speaker { width:22px; height:52px; border-width:2px; }
+  .stage-speaker i { width:14px; height:14px; border-width:3px; }
+  .speaker-left { left:0; }.speaker-right { right:0; }
+}
+@media(max-height:500px) and (min-width:601px) {
+  .band-travelers { left:calc(22% + var(--stage-arrival,0) * 28%); }
+  .arrival-stage { height:130px; width:430px; }
+  .stage-speaker { width:32px; height:58px; }
+  .stage-speaker i { width:20px; height:20px; border-width:3px; }
 }
