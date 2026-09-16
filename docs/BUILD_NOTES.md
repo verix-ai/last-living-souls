@@ -106,3 +106,10 @@ Replaced the preview with 0:27–1:12 of the original WAV: 45 seconds with a two
 ## Traveling band heading and individual profile frames
 
 The band heading now travels with the camera over the entire introduction stretch, drifting gently across the top until Zane, then leaving with the second scene. Each independently floating profile has a plum frame, dark translucent panel, and small pixel accents. The whole-screen world path remains open; no clipped carousel viewport was restored. Still mode retains a normal heading and wrapping profile grid.
+
+
+## About navigation and booking inquiry stop
+
+Replaced the top Listen shortcut with About and Booking. Added a fifth journey destination for a booking contact form between live shows and the performance, plus a booking link below the show cards. Updated world map, chapter dots, legacy about hash, timeline, still mode, final-stage index and player activation.
+
+The GoHighLevel integration runs server-side through the local Vite middleware and a Vercel function. Environment placeholders are ready in ignored `.env`; no real PIT or Location ID has been supplied yet. The eight mocked integration tests pass. The form retains input on delivery failure and only reports success after contact and note storage. See BOOKING.md for setup and current testing limitations. These changes are local pending credentials and live connection testing; the current static Sites deployment is not updated with an unusable contact form.
