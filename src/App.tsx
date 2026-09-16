@@ -103,6 +103,8 @@ export default function App() {
       const bandDistance = stride * 4
       world.current?.style.setProperty('--band-stride', `${stride}px`)
       world.current?.style.setProperty('--band-distance', `${bandDistance}px`)
+      // Carry the title over the whole lineup with a gentle horizontal drift.
+      world.current?.style.setProperty('--band-heading-travel', `${current.band * (bandDistance - window.innerWidth * .08)}px`)
       world.current?.style.setProperty('--travel', `${-current.scene * window.innerWidth - current.band * bandDistance}px`)
       world.current?.style.setProperty('--position', String(progress))
       // The final stretch brings the same travelers into their stage positions.

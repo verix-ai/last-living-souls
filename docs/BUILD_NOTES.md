@@ -101,3 +101,8 @@ Speaker cones gently pulse and pixel outlines expand only after the audio's play
 ## Alternate song excerpt
 
 Replaced the preview with 0:27–1:12 of the original WAV: 45 seconds with a two-second fade-in and the existing two-second fade-out. Encoded stereo MP3 at 192kbps and versioned the player URL so cached opening excerpts are refreshed. Stage-arrival playback and speaker animation are unchanged.
+
+
+## Traveling band heading and individual profile frames
+
+The band heading now travels with the camera over the entire introduction stretch, drifting gently across the top until Zane, then leaving with the second scene. Each independently floating profile has a plum frame, dark translucent panel, and small pixel accents. The whole-screen world path remains open; no clipped carousel viewport was restored. Still mode retains a normal heading and wrapping profile grid.

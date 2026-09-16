@@ -114,10 +114,11 @@
 }
 
 /* Portraits live along the world path. Only the outer screen clips the world. */
-.band-content { left:50vw; width:90vw; }
+.band-content { left:54vw; width:90vw; transform:translateX(calc(-50% + var(--band-heading-travel, 0px))); will-change:transform; }
 .band-card-track { position:absolute; top:27%; left:calc(50vw - 140px); width:max-content; gap:calc(var(--band-stride, 320px) - 280px); }
-.member-card { width:280px; border:0; box-shadow:none; background:none; padding:18px 20px; text-align:center; text-shadow:0 2px 8px #090519,0 1px 2px #090519; isolation:isolate; }
-.member-card:before { inset:-18px -28px; width:auto; height:auto; background:radial-gradient(ellipse,#120b25dd 10%,#120b2570 48%,transparent 72%); z-index:-1; }
+.member-card { width:280px; border:2px solid #9d768b; box-shadow:5px 5px 0 #0c0719aa,inset 0 0 0 3px #171020; background:linear-gradient(155deg,#302238ed,#171022f2); padding:18px 20px; text-align:center; text-shadow:0 2px 8px #090519,0 1px 2px #090519; isolation:isolate; }
+.member-card:before { inset:-2px auto auto 18px; width:28px; height:3px; background:#edc795; z-index:0; }
+.member-card:after { content:''; position:absolute; bottom:-2px; right:18px; width:28px; height:3px; background:#b58aad; }
 .member-portrait { background:none; }
 .member-portrait img { filter:drop-shadow(0 8px 12px #10081dbb); }
 .member-number { color:#dbc6df; }
