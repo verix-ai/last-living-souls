@@ -38,7 +38,7 @@ export default function SongPreview({ active, arrived, onPlayingChange }: { acti
     try { await track.play() } catch { setError('Couldn’t play. Tap to try again.') }
   }
   return <div className={`song-preview ${playing ? 'is-playing' : ''}`} role="group" aria-label="Shallow and Empty Promises, 45-second preview">
-    <audio ref={audio} src="/audio/shallow-and-empty-promises-preview.mp3" preload="auto"
+    <audio ref={audio} src="/audio/shallow-and-empty-promises-preview.mp3?v=27-72" preload="auto"
       onPlaying={() => { reportPlaying(true); setError('') }} onWaiting={() => reportPlaying(false)}
       onPause={() => reportPlaying(false)} onEnded={() => reportPlaying(false)}
       onTimeUpdate={() => setElapsed(audio.current?.currentTime ?? 0)}

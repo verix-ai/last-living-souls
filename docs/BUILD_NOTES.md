@@ -96,3 +96,8 @@ Replaced the clipped card carousel with a physically longer second scene. The wo
 The existing 45-second preview now attempts playback when stage arrival reaches its final position, rather than simply entering the last chapter. A manual pause remains paused until a new arrival. Leaving the stage stops playback; returning attempts a fresh preview. Browsers that reject automatic playback show “Tap play to start the show.” Playback errors are handled without pretending audio started.
 
 Speaker cones gently pulse and pixel outlines expand only after the audio's playing event. Pause, buffering, ending, or an error stops the animation; still mode and reduced-motion settings disable it. Verified blocked-autoplay fallback, tap-to-play, automatic playback on subsequent arrival, manual pause, speaker state changes, and mobile placement.
+
+
+## Alternate song excerpt
+
+Replaced the preview with 0:27–1:12 of the original WAV: 45 seconds with a two-second fade-in and the existing two-second fade-out. Encoded stereo MP3 at 192kbps and versioned the player URL so cached opening excerpts are refreshed. Stage-arrival playback and speaker animation are unchanged.
