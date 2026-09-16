@@ -19,6 +19,7 @@ export default function BandTravelers() {
       style={{ '--member-height': member.height, '--sprite': `url(/art/band/${member.id}.png)` } as CSSProperties}>
       {member.id === 'dan' && <span className="drum-riser" aria-hidden="true" />}
       <span className="band-sprite" aria-hidden="true" />
+      {['daniel', 'drew'].includes(member.id) && <img className="performance-sprite" src={`/art/band/${member.id}-performance.png`} width="160" height="160" alt="" aria-hidden="true" />}
       <StageInstrument member={member.id} />
       <span className="sr-only">{member.name}{member.role ? ` — ${member.role}` : ''}</span>
     </li>)}

@@ -154,3 +154,19 @@
 @media (prefers-reduced-motion: reduce) {
   .nebula-breath { animation: none; opacity: .4; }
 }
+
+/* The portal becomes a passing landmark; the final performance stays uncluttered. */
+.landmark-portal { opacity:calc(1 - var(--stage-arrival,0)); }
+.arrival-stage:before { content:''; position:absolute; inset:-15px -20px -15px; background:radial-gradient(ellipse at 50% 100%,#130f23ed, #130f2399 58%,transparent 76%); z-index:-1; }
+.cosmic-drifters { position:absolute; inset:0; opacity:calc(.75 - var(--stage-arrival,0) * .4); }
+.ship-rail { position:absolute; inset:0 auto 0 0; width:360vw; transform:translate3d(calc(var(--position,0) * -65vw),0,0); }
+.drifting-ship { position:absolute; width:var(--ship-size); animation:ship-drift 16s ease-in-out infinite alternate; animation-delay:var(--drift-delay); }
+.drifting-ship svg { width:100%; height:auto; }
+.cruiser { animation-duration:21s; }
+.ship-thrust { animation:engine-glow 1s steps(2,end) infinite; }
+.bright-star-rail { position:absolute; inset:0 auto 0 0; width:280vw; transform:translate3d(calc(var(--position,0) * -45vw),0,0); }
+.wandering-star { position:absolute; width:var(--star-size); height:var(--star-size); animation:star-wander 9s ease-in-out infinite alternate; animation-delay:var(--drift-delay); }
+@keyframes ship-drift { from { transform:translate(-28px,9px) rotate(-3deg); } to { transform:translate(34px,-13px) rotate(3deg); } }
+@keyframes star-wander { from { opacity:.35; transform:translate(-10px,9px) scale(.8); } to { opacity:.9; transform:translate(16px,-13px) scale(1); } }
+@keyframes engine-glow { 50% { opacity:.4; } }
+@media(max-width:600px) { .drifting-ship { width:calc(var(--ship-size) * .7); } .wandering-star { width:calc(var(--star-size) * .8); height:calc(var(--star-size) * .8); } }

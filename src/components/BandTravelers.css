@@ -77,10 +77,8 @@
 .stage-beam { position:absolute; bottom:0; width:45%; height:100%; background:linear-gradient(0deg,#d28ead22,transparent); clip-path:polygon(0 0,20% 0,100% 100%,0 100%); }
 .beam-left { left:8%; }.beam-right { right:8%; transform:scaleX(-1); }
 .world[data-performing="true"] .band-member:nth-child(n) .band-sprite { background-position:0 0; transform:none; }
-.world[data-performing="true"] .strum-hand { animation: stage-strum .55s steps(2,end) infinite; }
 .world[data-performing="true"] .conga-hand,.world[data-performing="true"] .keys-hand,.world[data-performing="true"] .drumstick { animation: stage-tap .65s steps(2,end) infinite; }
 .world[data-performing="true"] .hand-right { animation-delay: -.325s; }
-@keyframes stage-strum { 50% { transform:translate(2px,3px); } }
 @keyframes stage-tap { 50% { transform:translateY(-4px); } }
 .calm .arrival-stage { position:fixed; }
 @media(max-width:600px) {
@@ -95,3 +93,10 @@
   .stage-speaker { width:32px; height:58px; }
   .stage-speaker i { width:20px; height:20px; border-width:3px; }
 }
+
+.performance-sprite { display:none; position:absolute; width:calc(var(--band-size) * var(--member-height)); height:auto; max-width:none; bottom:calc(var(--band-size) * var(--member-height) * -.03125); image-rendering:pixelated; transform-origin:50% 96.875%; }
+.world[data-equipped="true"] .member-daniel .band-sprite,.world[data-equipped="true"] .member-drew .band-sprite { visibility:hidden; }
+.world[data-equipped="true"] .performance-sprite { display:block; }
+.world[data-performing="true"] .performance-sprite { animation:perform-sway 1.8s ease-in-out infinite alternate; }
+.world[data-performing="true"] .member-drew .performance-sprite { animation-delay:-.7s; }
+@keyframes perform-sway { from { transform:rotate(-1deg); } to { transform:rotate(1deg); } }

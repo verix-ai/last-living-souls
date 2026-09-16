@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import './ContinuousWorld.css'
+import CosmicDrifters from './CosmicDrifters'
 
 // Positions share one continuous world coordinate system, rather than restarting
 // at chapter boundaries. Chapter text travels over the same landscape.
@@ -12,13 +13,14 @@ const landmarks = [
   { art: 'mushrooms', at: 58, size: 25, mirror: false },
   { art: 'mushrooms', at: 67, size: 46, mirror: true },
   { art: 'ruins', at: 76, size: 28, mirror: true },
-  { art: 'portal', at: 89, size: 46, mirror: false },
+  { art: 'portal', at: 80, size: 37, mirror: false },
   { art: 'mushrooms', at: 99, size: 27, mirror: false },
 ]
 
 export default function ContinuousWorld() {
   return <div className="continuous-world" aria-hidden="true">
     <div className="cosmic-sky"><img src="/art/world/sky.webp" alt="" fetchPriority="high" /><div className="nebula-breath" /></div>
+    <CosmicDrifters />
     <div className="distant-ridge ridge-far" />
     <div className="distant-ridge ridge-near" />
     <div className="world-haze" />
