@@ -1,0 +1,6 @@
+@font-face{font-family:'VT323';src:url('/fonts/vt323.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'DM Sans';src:url('/fonts/dm-sans.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+*{box-sizing:border-box}html{margin:0;background:#0c0a20;scrollbar-width:thin;scrollbar-color:#80608b #0c0a20}body{margin:0;min-width:320px}button,a{touch-action:manipulation}button{font:inherit}img{max-width:100%}::selection{background:#f0a6c3;color:#1a132b}html:has(.experience){overscroll-behavior-x:none}
