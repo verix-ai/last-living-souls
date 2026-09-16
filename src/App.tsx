@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
+import BandTravelers from './components/BandTravelers'
 import './App.css'
 
 const links = {
@@ -77,6 +78,7 @@ export default function App() {
   useEffect(() => {
     let frame = 0
     let scrollTimer: ReturnType<typeof setTimeout>
+    let lastScroll = window.scrollY
     const update = () => {
       frame = 0
       const root = journey.current
@@ -94,9 +96,15 @@ export default function App() {
     }
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update)
-      world.current?.classList.add('traveling')
+      const delta = window.scrollY - lastScroll
+      lastScroll = window.scrollY
+      if (calm || Math.abs(delta) < .5) return
+      if (world.current) {
+        world.current.dataset.direction = delta > 0 ? 'right' : 'left'
+        world.current.classList.add('traveling')
+      }
       clearTimeout(scrollTimer)
-      scrollTimer = setTimeout(() => world.current?.classList.remove('traveling'), 160)
+      scrollTimer = setTimeout(() => world.current?.classList.remove('traveling'), 180)
     }
     const resize = () => {
       if (!calm && journey.current) window.scrollTo({ top: journey.current.offsetTop + (journey.current.offsetHeight - innerHeight) * progressRef.current / 4, behavior: 'instant' })
@@ -105,7 +113,7 @@ export default function App() {
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', resize)
     update()
-    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', resize); cancelAnimationFrame(frame); clearTimeout(scrollTimer) }
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', resize); cancelAnimationFrame(frame); clearTimeout(scrollTimer); world.current?.classList.remove('traveling') }
   }, [calm])
   useEffect(() => {
     const visitHash = () => { const index = chapters.findIndex(c => c.id === location.hash.slice(1)); if (index >= 0) requestAnimationFrame(() => goTo(index, true)) }
@@ -139,7 +147,7 @@ export default function App() {
       <section className="scene scene-transmission" id="transmission" aria-labelledby="title-transmission" inert={!calm && active !== 2}><img className="scene-art" src="/art/sanctuary.webp" alt="" loading="lazy" /><div className="scene-shade" /><div className="scene-content transmission-content"><div className="eyebrow"><span className="signal-light" /> SIGNAL ACQUIRED</div><h2 id="title-transmission">Are you<br /><em>receiving us?</em></h2><p>Pick a frequency. Let it take you somewhere.</p><MusicLinks /><div className="frequency"><span /> LAST LIVING SOULS <span /></div></div><div className="scene-caption"><span>03 / THE TRANSMISSION</span><span>TURN ON. TUNE IN. DRIFT OUT.</span></div></section>
       <section className="scene scene-sanctuary" id="sanctuary" aria-labelledby="title-sanctuary" inert={!calm && active !== 3}><img className="scene-art" src="/art/spore-forest.webp" alt="" loading="lazy" /><div className="scene-shade" /><div className="scene-content sanctuary-content"><div className="eyebrow">04 / THE LIVING STAGE</div><div className="release-layout"><div className="record-art"><img src="/art/shouldve-known.jpg" alt="Should’ve Known, single artwork" width="300" height="300" loading="lazy" /><span className="record-tag">A TRANSMISSION FROM EARTH</span></div><div className="release-copy"><span className="release-label">LAST LIVING SOULS / SINGLE</span><h2 id="title-sanctuary">Should’ve<br /><em>Known.</em></h2><p>For wherever your mind wanders next.</p><button className="pixel-button" onClick={() => setPlayerOpen(!playerOpen)} aria-expanded={playerOpen} aria-controls="spotify-player"><PixelIcon name={playerOpen ? 'pause' : 'play'} />{playerOpen ? 'Close player' : 'Listen to the single'}</button><ExternalLink href={links.track} className="small-link">Open in Spotify ↗</ExternalLink></div></div>{playerOpen && <div className="embedded-player" id="spotify-player"><iframe title="Listen to Should’ve Known by Last Living Souls on Spotify" src="https://open.spotify.com/embed/track/6h5yX5qxLx8IW2afIuMXt7?theme=0" width="100%" height="152" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" /></div>}</div><div className="scene-caption"><span>YOU FOUND THE SOUND</span><span>TAKE A LITTLE OF IT WITH YOU.</span></div>{signal(3)}</section>
       <section className="scene scene-portal" id="portal" aria-labelledby="title-portal" inert={!calm && active !== 4}><img className="scene-art" src="/art/sanctuary.webp" alt="" loading="lazy" /><div className="scene-shade" /><div className="scene-content portal-content"><div className="eyebrow">05 / THE PORTAL</div><h2 id="title-portal">The end is<br /><em>another beginning.</em></h2><p>Stay in our orbit.</p><div className="social-links">{(['instagram', 'tiktok', 'facebook'] as const).map(name => <ExternalLink key={name} href={links[name]} className={`social-key ${name}`} label={`Last Living Souls on ${name} (opens in a new tab)`}><PixelIcon name={name} /><span>{name === 'tiktok' ? 'TikTok' : name[0].toUpperCase() + name.slice(1)}</span></ExternalLink>)}</div><div className={`completion ${signals.length === 3 ? 'complete' : ''}`}><PixelIcon name="star" /><span>{signals.length === 3 ? 'ALL SIGNALS FOUND. YOU’RE ONE OF US.' : `${signals.length} / 3 LOST SIGNALS FOUND`}</span></div><button className="text-link" onClick={() => goTo(0)}>Wander again <span>↶</span></button></div><div className="scene-caption"><span>LAST LIVING SOULS © {new Date().getFullYear()}</span><span>THANKS FOR GETTING LOST WITH US.</span></div></section>
-    </div>{!calm && <div className="traveler" aria-hidden="true"><div className="traveler-float"><img src="/art/astronaut.png" alt="" width="444" height="426" /><div className="traveler-shadow" /></div></div>}<div className="scanlines" aria-hidden="true" /></div></main>
+    </div><BandTravelers />{!calm && <div className="traveler" aria-hidden="true"><div className="traveler-float"><img src="/art/astronaut.png" alt="" width="444" height="426" /><div className="traveler-shadow" /></div></div>}<div className="scanlines" aria-hidden="true" /></div></main>
     <footer className="hud-bottom"><div className="bottom-left"><button className="motion-button" onClick={toggleMotion} aria-pressed={calm} title="Switch between the animated journey and a still scrolling view"><span className="motion-symbol">{calm ? 'Ⅱ' : '≈'}</span><span>{calm ? 'Still mode' : 'Motion on'}</span></button><span className="hud-divider" /><button className="signal-counter" onClick={() => { setHint(!hint); announce(hint ? 'HINTS OFF. HAPPY WANDERING.' : 'LOOK FOR THE THREE GLOWING GOLD STARS.') }} aria-pressed={hint} aria-label={`${signals.length} of 3 lost signals found. ${hint ? 'Hide' : 'Show'} hints`}><PixelIcon name="star" /><span>{signals.length}<span className="dim"> / 3</span></span><span className="counter-label">SIGNALS</span></button></div><nav className="chapter-dots" aria-label="Quick chapter navigation">{chapters.map((chapter, i) => <button key={chapter.id} className={active === i ? 'active' : ''} onClick={() => goTo(i)} aria-label={`${i + 1}. ${chapter.name}`} aria-current={active === i ? 'location' : undefined}><span /><span className="dot-label">{chapter.name}</span></button>)}</nav><button className="next-chapter" onClick={() => goTo(active === 4 ? 0 : active + 1)}><span>{active === 4 ? 'Back to the beginning' : 'Keep exploring'}</span><span className="next-arrow">→</span></button><div className="journey-progress" aria-hidden="true"><div ref={bar} /></div></footer>
     <div className={`toast ${message ? 'visible' : ''}`} role="status">{message}</div><div className="sr-only" aria-live="polite">Chapter {active + 1}: {chapters[active].name}</div><div className="ambient-specks" aria-hidden="true">{Array.from({ length: 14 }, (_, i) => <i key={i} style={{ '--x': `${(i * 29 + 11) % 100}%`, '--y': `${(i * 17 + 24) % 100}%`, '--delay': `${-i * 1.7}s`, '--size': `${i % 3 + 1}px` } as CSSProperties} />)}</div>
   </div>

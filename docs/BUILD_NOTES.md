@@ -14,6 +14,10 @@ Five horizontal stages driven by native vertical scroll, original pixel-art envi
 - Wordmark, astronaut, album art and landscapes: public/art/.
 - Locally hosted fonts: public/fonts/ (VT323 and DM Sans from Google Fonts; SIL Open Font License).
 - Exact original landscape prompts: docs/art-prompts.json. Generated with the built-in imagegen tool, exported to WebP for the website.
+- Band lineup, names, roles and height differences: src/components/BandTravelers.tsx.
+- Band sprites and three-frame metadata: public/art/band/. The first frame faces front; the other two face right. Scrolling backward mirrors only the character, never the label.
+- Band animation and responsive sizing: src/components/BandTravelers.css. Native scroll controls direction and starts the stepping cycle; 180 ms without movement returns the band to the front-facing pose. Still mode and reduced-motion preferences disable stepping.
+- Sprite preparation: scripts/prepare-band-sprites.mjs accepts a folder of five generated three-cell strips and aligns/scales them without redrawing the artwork. Exact image-generation briefs are saved in docs/band-art-prompts.json.
 
 ## Asset sources
 
@@ -22,7 +26,9 @@ Supplied logo and astronaut were copied intact from the source project's design/
 Spotify artist: https://open.spotify.com/artist/05uIqoMvFedhpbcsIwPwjL
 Spotify track: https://open.spotify.com/track/6h5yX5qxLx8IW2afIuMXt7
 Apple Music artist verified by matching band and track: https://music.apple.com/us/artist/last-living-souls/1838556536
-Instagram, Facebook, and TikTok were retained from the existing site. Unresolved generic YouTube and Discord links were omitted rather than directing visitors to service homepages. No show dates, booking details, or band biographies were fabricated. A band photo was not identified among the supplied standalone assets examined.
+Instagram, Facebook, and TikTok were retained from the existing site. Unresolved generic YouTube and Discord links were omitted rather than directing visitors to service homepages. No show dates, booking details, or band biographies were fabricated.
+
+The subsequent band-character update uses the supplied band_photo.png found in Downloads/attachments. Daniel, Drew, Dan and Norris follow the user's identification and the photo's outfits. Zane follows the user's description: Black, bald, sunglasses, keys. Norris's role has not been specified, so her label uses only her name. The original astronaut remains intact and floats beside the band.
 
 ## Verification
 
@@ -34,6 +40,7 @@ Instagram, Facebook, and TikTok were retained from the existing site. Unresolved
 - Opening-to-forest travel, music shortcut initiation, and two signal collections exercised through browser UI.
 - Resize behavior was corrected to preserve journey progress.
 - Subsequent browser checks were blocked by automatic approval review due to the account usage limit. Full final-stage, player, reduced-motion, landscape, 360/430px, keyboard, 200% text, real iOS/Android, and slow-network validation remains unverified. Do not represent those checks as completed.
+- Band-character update: production build passed; generated strips inspected for transparent backgrounds, frame alignment, front/right orientation and recognizable clothing. Browser interaction testing was not repeated for this update.
 
 ## Behavior and privacy
 

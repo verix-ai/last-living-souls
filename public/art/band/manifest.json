@@ -1,0 +1,152 @@
+[
+  {
+    "name": "norris",
+    "width": 480,
+    "height": 160,
+    "frames": [
+      "front-facing idle",
+      "right-facing stride",
+      "right-facing passing step"
+    ],
+    "sourceBounds": [
+      {
+        "left": 202,
+        "top": 21,
+        "width": 364,
+        "height": 675
+      },
+      {
+        "left": 894,
+        "top": 21,
+        "width": 392,
+        "height": 675
+      },
+      {
+        "left": 1620,
+        "top": 21,
+        "width": 359,
+        "height": 675
+      }
+    ]
+  },
+  {
+    "name": "drew",
+    "width": 480,
+    "height": 160,
+    "frames": [
+      "front-facing idle",
+      "right-facing stride",
+      "right-facing passing step"
+    ],
+    "sourceBounds": [
+      {
+        "left": 234,
+        "top": 23,
+        "width": 318,
+        "height": 683
+      },
+      {
+        "left": 918,
+        "top": 23,
+        "width": 358,
+        "height": 683
+      },
+      {
+        "left": 1622,
+        "top": 23,
+        "width": 346,
+        "height": 682
+      }
+    ]
+  },
+  {
+    "name": "daniel",
+    "width": 480,
+    "height": 160,
+    "frames": [
+      "front-facing idle",
+      "right-facing stride",
+      "right-facing passing step"
+    ],
+    "sourceBounds": [
+      {
+        "left": 156,
+        "top": 22,
+        "width": 460,
+        "height": 681
+      },
+      {
+        "left": 874,
+        "top": 22,
+        "width": 470,
+        "height": 681
+      },
+      {
+        "left": 1575,
+        "top": 22,
+        "width": 403,
+        "height": 681
+      }
+    ]
+  },
+  {
+    "name": "dan",
+    "width": 480,
+    "height": 160,
+    "frames": [
+      "front-facing idle",
+      "right-facing stride",
+      "right-facing passing step"
+    ],
+    "sourceBounds": [
+      {
+        "left": 180,
+        "top": 28,
+        "width": 334,
+        "height": 675
+      },
+      {
+        "left": 883,
+        "top": 16,
+        "width": 384,
+        "height": 687
+      },
+      {
+        "left": 1643,
+        "top": 16,
+        "width": 320,
+        "height": 687
+      }
+    ]
+  },
+  {
+    "name": "zane",
+    "width": 480,
+    "height": 160,
+    "frames": [
+      "front-facing idle",
+      "right-facing stride",
+      "right-facing passing step"
+    ],
+    "sourceBounds": [
+      {
+        "left": 202,
+        "top": 78,
+        "width": 317,
+        "height": 591
+      },
+      {
+        "left": 942,
+        "top": 78,
+        "width": 291,
+        "height": 591
+      },
+      {
+        "left": 1624,
+        "top": 78,
+        "width": 295,
+        "height": 591
+      }
+    ]
+  }
+]
