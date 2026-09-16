@@ -84,3 +84,8 @@ The existing performance formation and 45-second player remain in the fourth/fin
 The world camera now advances throughout the band introductions, with distance-driven walking continuing as the cards pass. Removed the forced idle/front-facing override and scroll-driven card entrance rise. Cards are already present and gently bob as complete objects; desktop cards also extend across a horizontal lane so the camera passes them. Motion-off behavior is preserved.
 
 Replaced Amazon Music with a pixel YouTube Music icon. Its destination is explicitly a YouTube Music search for Last Living Souls and Shallow and Empty until a confirmed artist URL is supplied. The other music destinations are unchanged.
+
+
+## Introductions in open space
+
+Replaced the clipped card carousel with a physically longer second scene. The world track itself now carries the five introductions past the travelers, including continuous entry from the home scene and exit into shows. Removed the inner viewport, numbered carousel controls, hard card panels, and borders. Portraits and descriptions bob as single groups against soft radial shadows; only the screen boundary clips them. Home retains the logo and streaming links. Still mode lays the introductions out in a readable wrapping grid rather than a nested scroller.

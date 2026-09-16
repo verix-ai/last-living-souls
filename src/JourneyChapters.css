@@ -1,6 +1,8 @@
 /* Four scenes share a moving world; the band walks past floating introductions. */
 .journey { height:800svh; }
-.world-track { width:400vw; }
+.world-track { width:calc(400vw + var(--band-distance, 1280px)); }
+.scene-band { flex-basis:calc(100vw + var(--band-distance, 1280px)); width:calc(100vw + var(--band-distance, 1280px)); overflow:visible; }
+.scene-band:after { display:none; }
 .hud-top { justify-content:flex-end; }
 .coordinates { left:42px; transform:none; }
 .opening-content { top:17%; width:min(580px,88vw); }
@@ -15,7 +17,6 @@
 .band-content,.shows-content { top:13%; width:min(1180px,94vw); }
 .band-content .eyebrow,.shows-content .eyebrow { margin-bottom:16px; }
 .band-content h2,.shows-content h2 { font-size:clamp(45px,5vw,72px); margin-bottom:24px; letter-spacing:-1px; }
-.band-card-viewport { width:100%; overflow:hidden; padding:14px 0 8px; }
 .band-card-track { display:flex; gap:18px; width:max-content; will-change:transform; }
 .member-card { width:220px; flex:none; min-height:322px; position:relative; padding:18px 20px 22px; text-align:left; border:1px solid #b99abc66; background:linear-gradient(155deg,#292037f2,#151020f5); box-shadow:5px 5px 0 #0d09227a; animation:card-float 5s ease-in-out infinite alternate; animation-delay:var(--float-delay); }
 .member-card:before { content:''; position:absolute; width:20px; height:3px; left:20px; top:-2px; background:#ecc595; }
@@ -25,10 +26,6 @@
 .member-card h3 { font:36px/.95 'VT323',monospace; margin:9px 0 8px; color:#fff0cf; text-transform:uppercase; }
 .member-role { display:block; min-height:30px; font:16px/1.1 'VT323',monospace; color:#f2afc9; }
 .member-card p { font-size:12px; line-height:1.55; margin:8px 0 0; color:#d7c9db; }
-.band-card-controls { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:10px; font:12px 'VT323',monospace; letter-spacing:1px; color:#d2b7d2; }
-.band-card-controls>div { display:flex; gap:4px; }
-.band-card-controls button { min-width:36px; min-height:36px; border:1px solid #ccb5d333; background:#1d152dce; font:16px 'VT323',monospace; }
-.band-card-controls button:hover { color:#f5c474; border-color:#f5c474; }
 @keyframes card-float { from { transform:translateY(2px); } to { transform:translateY(-5px); } }
 .show-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; margin-top:36px; text-align:left; }
 .show-card { min-height:280px; padding:28px; background:#191225ed; border:1px solid #b598b64d; box-shadow:5px 5px #0d0a2070; }
@@ -40,9 +37,6 @@
 .show-card p { font:14px/1.4 'DM Sans',sans-serif; margin:0; }
 .upcoming .show-date { color:#987c9e; }
 .upcoming h3 { color:#ccb6d2; }
-.calm .band-card-viewport { overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; }
-.calm .member-card { transform:none; scroll-snap-align:start; }
-.calm .band-card-controls>span { visibility:hidden; }
 .calm .band-content,.calm .shows-content { top:13%; }
 @media(min-width:1000px) { .band-card-track { gap:48px; }.member-card { width:280px; } }
 @media(max-width:600px) {
@@ -67,9 +61,6 @@
   .member-card h3 { font-size:35px; }
   .member-role { min-height:18px; }
   .member-card p { font-size:13px; line-height:1.55; max-width:none; }
-  .band-card-controls { justify-content:center; flex-direction:column; gap:4px; margin-top:9px; }
-  .band-card-controls button { min-width:40px; min-height:40px; }
-  .band-card-controls>span { font-size:11px; }
   .show-cards { grid-template-columns:1fr; gap:12px; margin-top:25px; }
   .show-card { display:flex; align-items:center; min-height:100px; padding:16px 18px; gap:20px; }
   .show-date { width:48px; flex:none; flex-direction:column; align-items:center; gap:0; font-size:15px; }
@@ -92,8 +83,6 @@
   .member-portrait img { width:78px; height:78px; }
   .member-card h3 { font-size:30px; margin:6px 0; }
   .member-card p { font-size:12px; margin-top:6px; }
-  .band-card-controls { margin-top:4px; }
-  .band-card-controls>span { display:none; }
   .show-cards { margin-top:15px; gap:10px; }
   .show-card { min-height:88px; padding:11px 15px; }
   .show-card h3 { font-size:23px; margin-bottom:4px; }
@@ -111,17 +100,32 @@
   .band-content,.shows-content,.calm .band-content,.calm .shows-content { top:18%; width:92%; }
   .band-content .eyebrow,.shows-content .eyebrow { font-size:12px; margin-bottom:7px; }
   .band-content h2,.shows-content h2 { font-size:30px; margin-bottom:0; }
-  .band-card-viewport { padding:8px 0 3px; }
   .member-card { width:228px; min-height:143px; padding:10px 12px 10px 80px; }
   .member-portrait { position:absolute; left:3px; top:14px; width:76px; height:85px; }
   .member-portrait img { width:76px; height:76px; }
   .member-number { font-size:8px; letter-spacing:.4px; }
   .member-card h3 { font-size:25px; margin:4px 0; }.member-role { font-size:12px; min-height:23px; }
   .member-card p { font-size:10px; line-height:1.35; margin:3px 0 0; }
-  .band-card-controls { margin-top:0; }.band-card-controls button { min-height:28px; min-width:28px; }
   .show-cards { gap:14px; margin-top:12px; }.show-card { min-height:145px; padding:14px; }
   .show-date { font-size:12px; }.show-date strong { font-size:31px; }.show-status { font-size:9px; margin:7px 0; }.show-card h3 { font-size:23px; margin-bottom:8px; }.show-card p { font-size:11px; }
 }
 @media(max-height:500px) and (min-width:601px) {
   .world[data-scene="1"] .band-travelers,.world[data-scene="2"] .band-travelers { --band-size:40px; left:48%; }
 }
+
+/* Portraits live along the world path. Only the outer screen clips the world. */
+.band-content { left:50vw; width:90vw; }
+.band-card-track { position:absolute; top:27%; left:calc(50vw - 140px); width:max-content; gap:calc(var(--band-stride, 320px) - 280px); }
+.member-card { width:280px; border:0; box-shadow:none; background:none; padding:18px 20px; text-align:center; text-shadow:0 2px 8px #090519,0 1px 2px #090519; isolation:isolate; }
+.member-card:before { inset:-18px -28px; width:auto; height:auto; background:radial-gradient(ellipse,#120b25dd 10%,#120b2570 48%,transparent 72%); z-index:-1; }
+.member-portrait { background:none; }
+.member-portrait img { filter:drop-shadow(0 8px 12px #10081dbb); }
+.member-number { color:#dbc6df; }
+.member-card p { font-size:13px; line-height:1.55; margin:8px 0 0; }
+@media(max-width:600px) { .band-card-track { top:27%; } }
+@media(max-height:730px) and (max-width:600px) { .band-card-track { top:24%; } .member-card { padding:12px 20px; } }
+@media(max-height:500px) and (min-width:601px) { .band-card-track { top:32%; } .member-card { padding:10px 12px 10px 80px; text-align:left; }.member-card p { font-size:10px; } }
+.calm .scene-band { height:auto; min-height:100svh; padding:100px 20px 180px; }
+.calm .band-content { position:relative; top:auto; left:auto; transform:none; width:100%; }
+.calm .band-card-track { position:relative; top:auto; left:auto; width:100%; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:30px; }
+.calm .member-card { width:min(280px,100%); justify-self:center; }

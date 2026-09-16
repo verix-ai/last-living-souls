@@ -67,8 +67,6 @@ export default function App() {
   const journey = useRef<HTMLElement>(null)
   const world = useRef<HTMLDivElement>(null)
   const bar = useRef<HTMLDivElement>(null)
-  const bandViewport = useRef<HTMLDivElement>(null)
-  const bandTrack = useRef<HTMLDivElement>(null)
   const mapButton = useRef<HTMLButtonElement>(null)
   const activeRef = useRef(0)
   const progressRef = useRef(0)
@@ -98,14 +96,13 @@ export default function App() {
       const progress = current.world
       progressRef.current = time
       if (activeRef.current !== index) { activeRef.current = index; setActive(index) }
-      world.current?.style.setProperty('--travel', `${-current.scene * 100}vw`)
+      // The introductions occupy an actual stretch of the world, not a clipped carousel.
+      const stride = Math.max(320, window.innerWidth * (window.innerWidth <= 600 ? .96 : .38))
+      const bandDistance = stride * 4
+      world.current?.style.setProperty('--band-stride', `${stride}px`)
+      world.current?.style.setProperty('--band-distance', `${bandDistance}px`)
+      world.current?.style.setProperty('--travel', `${-current.scene * window.innerWidth - current.band * bandDistance}px`)
       world.current?.style.setProperty('--position', String(progress))
-      if (bandTrack.current && bandViewport.current && !calm) {
-        // Still mode uses native horizontal scrolling; clear it before resuming the camera.
-        bandViewport.current.scrollLeft = 0
-        const overflow = Math.max(0, bandTrack.current.scrollWidth - bandViewport.current.clientWidth)
-        bandTrack.current.style.transform = `translate3d(${-overflow * current.band}px,0,0)`
-      } else if (bandTrack.current) bandTrack.current.style.transform = ''
       // The final stretch brings the same travelers into their stage positions.
       const arrival = Math.max(0, Math.min(1, (progress - 3.55) / .45))
       world.current?.style.setProperty('--stage-arrival', String(arrival))
@@ -164,11 +161,7 @@ export default function App() {
     {mapOpen && <><button className="map-scrim" aria-label="Dismiss world map" onClick={() => setMapOpen(false)} /><nav className="world-map" id="world-map" aria-label="World chapters"><div className="map-heading"><span>CHOOSE YOUR DESTINATION</span><span>01—04</span></div>{chapters.map((chapter, index) => <button key={chapter.id} className={active === index ? 'current' : ''} aria-current={active === index ? 'location' : undefined} onClick={() => goTo(index)}><span className="map-number">0{index + 1}</span><span><strong>{chapter.name}</strong><small>{chapter.note}</small></span><span className="map-arrow">↗</span></button>)}</nav></>}
     <main ref={journey} className="journey" aria-label="The Last Signal, a journey with Last Living Souls"><div ref={world} className="world" data-scene={active}><ContinuousWorld /><div className="world-track">
       <section className="scene scene-wasteland" id="wasteland" aria-labelledby="title-wasteland" inert={!calm && active !== 0}><div className="scene-content opening-content"><div className="eyebrow"><span className="tiny-cross">✦</span> A PSYCHEDELIC EXPEDITION <span className="tiny-cross">✦</span></div><h1 id="title-wasteland"><span className="sr-only">Last Living Souls</span><img className="hero-wordmark" src="/art/wordmark.png" alt="" width="800" height="289" /></h1><MusicLinks /><p className="opening-line">Somewhere between the end of the world<br className="desktop-break" /> and the start of a song.</p><button className="pixel-button journey-start" onClick={() => goTo(1)}>Follow the signal <PixelIcon name="arrow" /></button><span className="scroll-instruction">SCROLL TO WANDER <span>↓</span></span></div><div className="scene-caption"><span>01 / HOME</span><span>THERE’S SOMETHING OUT THERE.</span></div>{signal(0)}</section>
-      <section className="scene scene-band" id="band" aria-labelledby="title-band" inert={!calm && active !== 1}><BandCards viewport={bandViewport} track={bandTrack} onSelect={index => {
-        if (calm) { const card = bandTrack.current?.children[index] as HTMLElement | undefined; if (card && bandViewport.current) bandViewport.current.scrollTo({ left: card.offsetLeft, behavior: 'instant' }); return }
-        const root = journey.current
-        if (root) window.scrollTo({ top: root.offsetTop + (root.offsetHeight - window.innerHeight) * (1 + index / 4 * 1.4) / JOURNEY_END, behavior: 'smooth' })
-      }} /><div className="scene-caption"><span>FIVE SOULS / ONE SOUND</span><span>THE PEOPLE BEHIND THE SIGNAL.</span></div>{signal(1)}</section>
+      <section className="scene scene-band" id="band" aria-labelledby="title-band" inert={!calm && active !== 1}><BandCards /><div className="scene-caption"><span>FIVE SOULS / ONE SOUND</span><span>THE PEOPLE BEHIND THE SIGNAL.</span></div>{signal(1)}</section>
       <section className="scene scene-shows" id="shows" aria-labelledby="title-shows" inert={!calm && active !== 2}><Shows /><div className="scene-caption"><span>03 / LIVE SHOWS</span><span>GOOD PEOPLE. LOUD MUSIC.</span></div>{signal(3)}</section>
       <section className="scene scene-portal" id="portal" aria-labelledby="title-portal" inert={!calm && active !== 3}><div className="scene-content portal-content"><div className="eyebrow">04 / THE PERFORMANCE</div><h2 id="title-portal">The end is<br /><em>another beginning.</em></h2><SongPreview active={active === 3} /><div className="social-links">{(['instagram', 'tiktok', 'facebook'] as const).map(name => <ExternalLink key={name} href={links[name]} className={`social-key ${name}`} label={`Last Living Souls on ${name} (opens in a new tab)`}><PixelIcon name={name} /><span>{name === 'tiktok' ? 'TikTok' : name[0].toUpperCase() + name.slice(1)}</span></ExternalLink>)}</div><div className={`completion ${signals.length === 3 ? 'complete' : ''}`}><PixelIcon name="star" /><span>{signals.length === 3 ? 'YOUR LIGHT FOUND US.' : `YOUR LIGHT: ${signals.length} / 3 STARS FOUND`}</span></div><button className="text-link" onClick={() => goTo(0)}>Wander again <span>↶</span></button></div><div className="scene-caption"><span>LAST LIVING SOULS © {new Date().getFullYear()}</span><span>THANKS FOR GETTING LOST WITH US.</span></div></section>
     </div><BandTravelers /><div className="scanlines" aria-hidden="true" /></div></main>

@@ -1,5 +1,5 @@
-// Four destinations: chapter text holds through the longer band stretch,
-// while the world camera and travelers continue moving past the floating cards.
+// Four destinations, with a longer second scene for all five introductions.
+// The camera combines scene travel with the physical length of the band path.
 export const CHAPTER_TIMES = [0, 1, 3.4, 4.4] as const
 export const JOURNEY_END = 4.4
 export function journeyFrame(time: number) {

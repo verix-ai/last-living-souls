@@ -1,4 +1,4 @@
-import type { CSSProperties, RefObject } from 'react'
+import type { CSSProperties } from 'react'
 
 export const bandMembers = [
   { id: 'daniel', name: 'Daniel', role: 'Lead vocals · Lead guitar', intro: 'The voice and lead guitar of Last Living Souls. Out front, with a song to carry you somewhere else.' },
@@ -7,15 +7,16 @@ export const bandMembers = [
   { id: 'norris', name: 'Norris', role: 'Congas', intro: 'Norris joins the rhythm section on congas. Another layer of percussion in the Last Living Souls sound.' },
   { id: 'zane', name: 'Zane', role: 'Keys', intro: 'Zane plays keys for Last Living Souls. Find him behind the keyboard when the band takes the stage.' },
 ]
-export default function BandCards({ viewport, track, onSelect }: { viewport: RefObject<HTMLDivElement | null>; track: RefObject<HTMLDivElement | null>; onSelect: (index: number) => void }) {
-  return <div className="scene-content band-content">
+export default function BandCards() {
+  return <>
+    <div className="scene-content band-content">
     <div className="eyebrow">02 / MEET THE BAND</div><h2 id="title-band">Five souls.<em> One sound.</em></h2>
-    <div className="band-card-viewport" ref={viewport}><div className="band-card-track" ref={track}>
+    </div>
+    <div className="band-card-track">
       {bandMembers.map((member, i) => <article className={`member-card card-${member.id}`} key={member.id} style={{ '--float-delay': `${i * -.8}s` } as CSSProperties}>
         <div className="member-portrait"><img src={`/art/band/heads/${member.id}.png`} width="96" height="96" alt={`${member.name}'s pixel-art portrait`} /></div>
         <span className="member-number">0{i + 1} / LAST LIVING SOULS</span><h3>{member.name}</h3><span className="member-role">{member.role}</span><p>{member.intro}</p>
       </article>)}
-    </div></div>
-    <div className="band-card-controls"><span>KEEP SCROLLING TO MEET EVERYONE</span><div aria-label="Choose a band member">{bandMembers.map((m,i)=><button key={m.id} onClick={()=>onSelect(i)} aria-label={`Show ${m.name}'s introduction`}>{i+1}</button>)}</div></div>
-  </div>
+    </div>
+  </>
 }
