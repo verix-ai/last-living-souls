@@ -12,7 +12,7 @@ import './JourneyChapters.css'
 const links = {
   spotify: 'https://open.spotify.com/artist/05uIqoMvFedhpbcsIwPwjL',
   apple: 'https://music.apple.com/us/artist/last-living-souls/1838556536',
-  amazon: 'https://music.amazon.com/albums/B0FQ7YFQ1W',
+  youtube: 'https://music.youtube.com/search?q=Last+Living+Souls+Shallow+and+Empty',
   instagram: 'https://www.instagram.com/lastlivingsouls.music',
   facebook: 'https://www.facebook.com/LastLivingSouls.music',
   tiktok: 'https://www.tiktok.com/@lastlivingsouls.music',
@@ -23,9 +23,9 @@ const chapters = [
   { id: 'shows', name: 'Live Shows', note: 'See you out there.' },
   { id: 'portal', name: 'The Performance', note: 'Let the sound take over.' },
 ]
-type IconName = 'spotify' | 'apple' | 'amazon' | 'instagram' | 'facebook' | 'tiktok' | 'play' | 'star' | 'arrow' | 'map' | 'pause'
+type IconName = 'spotify' | 'apple' | 'youtube' | 'instagram' | 'facebook' | 'tiktok' | 'play' | 'star' | 'arrow' | 'map' | 'pause'
 const glyphs: Record<IconName, string[]> = {
-  amazon: ['000001100000','000011110000','000110110000','001100011000','001111111000','011000001100','000000000000','010000000010','001111111100','000011110000'],
+  youtube: ['000111111000','001000000100','010000000010','100010000001','100011100001','100011110001','100011100001','100010000001','010000000010','001000000100','000111111000'],
   spotify: ['000111111000','001111111100','011000000110','110111110011','111111111111','110000001111','111111100111','111000111111','011111101110','001111111100','000111111000'],
   apple: ['000000110000','000001100000','001110011100','011111111110','111111111000','111111110000','111111110000','111111111000','011111111110','001111111100','000110011000'],
   instagram: ['001111111100','011000000110','110000011011','110011000011','110100100011','110100100011','110011000011','110000000011','011000000110','001111111100'],
@@ -47,7 +47,7 @@ function MusicLinks() {
   return <div className="music-links">
     <ExternalLink href={links.spotify} className="platform spotify" label="Listen to Last Living Souls on Spotify (opens in a new tab)"><span className="platform-key"><PixelIcon name="spotify" /></span><span>Spotify</span></ExternalLink>
     <ExternalLink href={links.apple} className="platform apple" label="Listen to Last Living Souls on Apple Music (opens in a new tab)"><span className="platform-key"><PixelIcon name="apple" /></span><span>Apple Music</span></ExternalLink>
-    <ExternalLink href={links.amazon} className="platform amazon" label="Listen to Last Living Souls on Amazon Music (opens in a new tab)"><span className="platform-key"><PixelIcon name="amazon" /></span><span>Amazon Music</span></ExternalLink>
+    <ExternalLink href={links.youtube} className="platform youtube" label="Find Last Living Souls — Shallow and Empty on YouTube Music (search opens in a new tab)"><span className="platform-key"><PixelIcon name="youtube" /></span><span>YouTube Music</span></ExternalLink>
   </div>
 }
 function readMotionPreference() {
@@ -100,8 +100,6 @@ export default function App() {
       if (activeRef.current !== index) { activeRef.current = index; setActive(index) }
       world.current?.style.setProperty('--travel', `${-current.scene * 100}vw`)
       world.current?.style.setProperty('--position', String(progress))
-      if (world.current) world.current.dataset.readingBand = String(time >= 1 && time <= 2.4)
-      world.current?.style.setProperty('--band-reveal', String(Math.max(0, Math.min(1, (current.scene - .5) * 2))))
       if (bandTrack.current && bandViewport.current && !calm) {
         // Still mode uses native horizontal scrolling; clear it before resuming the camera.
         bandViewport.current.scrollLeft = 0

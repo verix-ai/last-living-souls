@@ -77,3 +77,10 @@ Restructured the journey as Home → Meet the Band → Live Shows → The Perfor
 Five floating portrait cards use enlarged crops of the existing front-facing pixel characters. Their copy is deliberately limited to confirmed roles and short introductions until the band provides musical-background details. A dedicated reading interval holds the scenery while vertical scrolling carries all five cards across small screens. Numbered controls provide direct access; still mode uses a horizontally scrollable strip. Show cards contain the user-provided September 20 Alan Walden celebration of life plus two coming-soon slots; no unconfirmed venue, price, time, or ticket link was added.
 
 The existing performance formation and 45-second player remain in the fourth/final scene. World travel still covers the full landscape, and the three stored star identifiers remain compatible. Legacy scene hashes route to their replacements. Verified reading interval boundaries, chapter destinations, mobile card access, compact layouts, and finale state.
+
+
+## Walking past floating introductions
+
+The world camera now advances throughout the band introductions, with distance-driven walking continuing as the cards pass. Removed the forced idle/front-facing override and scroll-driven card entrance rise. Cards are already present and gently bob as complete objects; desktop cards also extend across a horizontal lane so the camera passes them. Motion-off behavior is preserved.
+
+Replaced Amazon Music with a pixel YouTube Music icon. Its destination is explicitly a YouTube Music search for Last Living Souls and Shallow and Empty until a confirmed artist URL is supplied. The other music destinations are unchanged.
