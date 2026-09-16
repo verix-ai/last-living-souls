@@ -100,3 +100,12 @@
 .world[data-performing="true"] .performance-sprite { animation:perform-sway 1.8s ease-in-out infinite alternate; }
 .world[data-performing="true"] .member-drew .performance-sprite { animation-delay:-.7s; }
 @keyframes perform-sway { from { transform:rotate(-1deg); } to { transform:rotate(1deg); } }
+
+/* Speaker motion follows actual audio playback, including pause and buffering. */
+.stage-speaker:before,.stage-speaker:after { content:''; position:absolute; inset:-7px; border:2px solid #edb984; opacity:0; pointer-events:none; }
+.world[data-sound-playing="true"] .stage-speaker i { animation:speaker-thump .6s ease-in-out infinite; }
+.world[data-sound-playing="true"] .stage-speaker:before,.world[data-sound-playing="true"] .stage-speaker:after { animation:speaker-wave 1.2s ease-out infinite; }
+.world[data-sound-playing="true"] .stage-speaker:after { animation-delay:.6s; }
+@keyframes speaker-thump { 0%,100% { transform:scale(1); } 35% { transform:scale(1.12); border-color:#ac7a91; } }
+@keyframes speaker-wave { 0% { transform:scale(1); opacity:0; } 20% { opacity:.45; } 100% { transform:scale(1.45,1.22); opacity:0; } }
+@media(prefers-reduced-motion:reduce) { .stage-speaker:before,.stage-speaker:after,.stage-speaker i { animation:none!important; } }

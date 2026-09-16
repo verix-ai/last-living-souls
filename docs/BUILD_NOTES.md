@@ -89,3 +89,10 @@ Replaced Amazon Music with a pixel YouTube Music icon. Its destination is explic
 ## Introductions in open space
 
 Replaced the clipped card carousel with a physically longer second scene. The world track itself now carries the five introductions past the travelers, including continuous entry from the home scene and exit into shows. Removed the inner viewport, numbered carousel controls, hard card panels, and borders. Portraits and descriptions bob as single groups against soft radial shadows; only the screen boundary clips them. Home retains the logo and streaming links. Still mode lays the introductions out in a readable wrapping grid rather than a nested scroller.
+
+
+## Stage arrival audio and speaker motion
+
+The existing 45-second preview now attempts playback when stage arrival reaches its final position, rather than simply entering the last chapter. A manual pause remains paused until a new arrival. Leaving the stage stops playback; returning attempts a fresh preview. Browsers that reject automatic playback show “Tap play to start the show.” Playback errors are handled without pretending audio started.
+
+Speaker cones gently pulse and pixel outlines expand only after the audio's playing event. Pause, buffering, ending, or an error stops the animation; still mode and reduced-motion settings disable it. Verified blocked-autoplay fallback, tap-to-play, automatic playback on subsequent arrival, manual pause, speaker state changes, and mobile placement.
