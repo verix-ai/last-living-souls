@@ -54,6 +54,8 @@ function MusicLinks() {
     <ExternalLink href={links.youtube} className="platform youtube" label="Find Last Living Souls — Shallow and Empty on YouTube Music (search opens in a new tab)"><span className="platform-key"><PixelIcon name="youtube" /></span><span>YouTube Music</span></ExternalLink>
   </div>
 }
+// Resolve OS preference once, then let the visitor’s saved choice control both
+// layout and animation through .calm. CSS must not independently override it.
 function readMotionPreference() {
   try { const saved = localStorage.getItem('lls-calm'); if (saved !== null) return saved === 'true' } catch { /* Storage may be unavailable. */ }
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches

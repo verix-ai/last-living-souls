@@ -171,3 +171,10 @@ The GoHighLevel integration runs server-side through the local Vite middleware a
 - Reproduced the reported jump: at the same 430px width, increasing viewport height from 720px to 780px changed the base sprite from 76px to 94.59375px. The max-height:730px override was switching during toolbar movement.
 - Removed both height-breakpoint overrides for character scale. Portrait phones now keep the width-based clamp in every chapter; wide touch screens use the stable small viewport dimension to stay compact in landscape without reacting to browser chrome.
 - Browser verification at 430×720 → 430×780 → 430×720, then reverse scrolling at 430×780: all five sprite dimensions remained identical across Home, Meet the Band, Performance and Live Shows. Finale performance image widths match their walking sprites. Checked mobile opening spacing; production build and diff checks pass. Physical-device browser toolbar animation was simulated through viewport resizing.
+
+
+## Motion preference override — September 17, 2026
+
+A visitor with an OS reduced-motion preference defaulted to the vertical still view. After choosing Motion on, React restored horizontal scrolling, but independent CSS media queries continued to force frame zero and disable animation. The resolved app `.calm` state now controls all motion styles, including sprites, transitions, nebula, and speaker animation. OS reduced motion still determines the initial default when no saved choice exists; the visitor's explicit choice takes precedence.
+
+Validation: production build passed. A temporary local browser fixture simulated reduced-motion matching in JS and forced any corresponding CSS media branches to apply. Initial still mode was vertical with no nebula animation. Motion on switched to a sticky horizontal world, restored nebula animation, and scrolling produced both walking-sheet offsets (-125.547px and -251.094px at the test viewport). Reload retained Motion on; toggling back restored the vertical still view and stopped animations. This reproduces the relevant preference combination, not the other visitor's physical device. The fixture was removed after verification.

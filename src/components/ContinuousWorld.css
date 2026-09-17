@@ -151,9 +151,7 @@
   .record-art { width: 124px; }
   .record-tag { display: none; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .nebula-breath { animation: none; opacity: .4; }
-}
+.calm .nebula-breath { animation: none; opacity: .4; }
 
 /* The portal becomes a passing landmark; the final performance stays uncluttered. */
 .landmark-portal { opacity:calc(1 - var(--stage-arrival,0)); }
