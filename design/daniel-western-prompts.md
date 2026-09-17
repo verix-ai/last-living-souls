@@ -1,5 +1,13 @@
 # Daniel — Western outfit revision
 
+## Less-round face refinement
+
+Edited with built-in image generation, then regenerated the walking strip, portrait and performance asset using the preparation script.
+
+Walking prompt: Use case: precise-object-edit. This is the edit target: a transparent 3-frame pixel-art walking sprite strip of Daniel. Make ONLY his face shape subtly less round in ALL THREE frames: cheeks about 10–12% narrower, straighter cheek contours, a slightly longer and more defined tapered jaw/beard outline. Keep his warm expression, eyes, nose, short swept-back sandy-gray hair and full salt-and-pepper beard. Do not make him gaunt, drastically change his likeness, shrink his entire head or change hair height. Preserve everything below the neck EXACTLY: embroidered black Western shirt, red piping, turquoise details, blue jeans, boots, body width/height, poses, spacing, three equal cells in one 3:1 strip and ground baseline. Preserve the chunky retro pixel style, original canvas composition, and true transparent alpha. No text, labels, background, guitar or new objects. A subtle facial refinement only.
+
+Performance prompt: Use case: precise-object-edit. Image1 is the EDIT TARGET, Daniel performing with his light blue guitar. Image2 is the facial refinement REFERENCE. Make ONLY the face in image1 less round to match the front-facing refined face in image2: subtly narrower cheeks by about 10–12%, straighter cheek contours and a slightly longer, more defined tapered jaw/beard silhouette. Keep his full gray beard, swept-back hair, eyes, nose, expression, skin tone and recognizable likeness. Preserve the same overall hair height and body height. Everything below the neck stays exactly as in image1, especially LIGHT BLUE guitar with white pickguard, BOTH hands playing, embroidered black Western shirt, jeans, boots, stance and proportions. Do not copy walking poses into the target. One full-body front-facing performing sprite, same square canvas, position and baseline, crisp chunky pixels, true transparent alpha, no labels or background.
+
 ## Light-blue guitar correction
 
 The performance source and prepared sprite now use a light-blue guitar. Edited with the built-in image-generation tool using this prompt:

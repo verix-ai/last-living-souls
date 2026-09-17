@@ -28,8 +28,8 @@ export default function BandTravelers() {
       data-performance-ready={performanceReady[member.id] ?? false}
       style={{ '--member-height': member.height } as CSSProperties}>
       {member.id === 'dan' && <span className="drum-riser" aria-hidden="true" />}
-      <span className="band-sprite" aria-hidden="true"><img className="band-sprite-sheet" src={`/art/band/${member.id}.png${member.id === 'daniel' ? '?v=western-1' : ''}`} width="480" height="160" alt="" loading="eager" decoding="sync" fetchPriority="high" draggable={false} /></span>
-      {['daniel', 'drew'].includes(member.id) && <img className="performance-sprite" src={`/art/band/${member.id}-performance.png${member.id === 'daniel' ? '?v=western-blue-2' : ''}`} width="160" height="160" alt="" aria-hidden="true" loading="eager" onLoad={event => { void preparePerformance(member.id, event) }} onError={() => setPerformanceReady(ready => ({ ...ready, [member.id]: false }))} />}
+      <span className="band-sprite" aria-hidden="true"><img className="band-sprite-sheet" src={`/art/band/${member.id}.png${member.id === 'daniel' ? '?v=western-face-3' : ''}`} width="480" height="160" alt="" loading="eager" decoding="sync" fetchPriority="high" draggable={false} /></span>
+      {['daniel', 'drew'].includes(member.id) && <img className="performance-sprite" src={`/art/band/${member.id}-performance.png${member.id === 'daniel' ? '?v=western-face-3' : ''}`} width="160" height="160" alt="" aria-hidden="true" loading="eager" onLoad={event => { void preparePerformance(member.id, event) }} onError={() => setPerformanceReady(ready => ({ ...ready, [member.id]: false }))} />}
       <StageInstrument member={member.id} />
       <span className="sr-only">{member.name}{member.role ? ` — ${member.role}` : ''}</span>
     </li>)}

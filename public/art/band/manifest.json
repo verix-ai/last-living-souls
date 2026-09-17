@@ -71,21 +71,21 @@
     "sourceBounds": [
       {
         "left": 185,
-        "top": 31,
-        "width": 334,
-        "height": 654
+        "top": 32,
+        "width": 335,
+        "height": 655
       },
       {
-        "left": 895,
-        "top": 31,
-        "width": 396,
-        "height": 656
+        "left": 896,
+        "top": 29,
+        "width": 397,
+        "height": 658
       },
       {
-        "left": 1622,
-        "top": 31,
-        "width": 367,
-        "height": 657
+        "left": 1596,
+        "top": 30,
+        "width": 368,
+        "height": 658
       }
     ],
     "source": "design/band-sprites/daniel-western.png"
