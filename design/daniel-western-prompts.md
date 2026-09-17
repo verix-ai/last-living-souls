@@ -1,5 +1,11 @@
 # Daniel — Western outfit revision
 
+## Light-blue guitar correction
+
+The performance source and prepared sprite now use a light-blue guitar. Edited with the built-in image-generation tool using this prompt:
+
+Use case: precise-object-edit. Edit this transparent pixel-art game sprite. Change ONLY the bright pink/magenta paint on the electric guitar body and its matching headstock to LIGHT BLUE (powder/sky blue, around #8bcbea with pale blue highlights and medium blue shadow pixels). Preserve the white pickguard, dark fretboard, strings, hardware and black outline. Everything else must remain unchanged: exact character, face, hair, beard, embroidered black Western shirt, blue jeans, boots, body proportions, pose, both hands on the instrument, guitar shape and angle, placement, pixel-art style, framing, transparent alpha background. No added objects or text. Do not redesign or redraw Daniel. This is solely a guitar paint-color correction.
+
 Generated with the built-in image-generation tool. Reference photographs were used for outfit and likeness; they are not copied into the repository.
 
 ## Walking sheet prompt
@@ -18,4 +24,3 @@ Create ONE full-body front-facing Daniel performing on electric guitar for this 
 - Prepared assets: `public/art/band/daniel.png`, `public/art/band/daniel-performance.png`, `public/art/band/heads/daniel.png`.
 - Run `node scripts/prepare-daniel-western.mjs` to reproduce mechanical cropping and nearest-neighbor sizing.
 - Daniel's height is 0.97 of the shared size; Zena's is 1.00. Feet remain aligned to the same ground baseline.
-
