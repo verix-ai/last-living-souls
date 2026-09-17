@@ -145,3 +145,10 @@ The GoHighLevel integration runs server-side through the local Vite middleware a
 - Pause offscreen card/ship/star animations using IntersectionObserver, with a 100px margin so they resume before entry. Keep visible animation, parallax, art, and sprite proportions unchanged.
 - Height-only viewport changes no longer call scrollTo, avoiding interference with mobile browser chrome/native momentum. Width/orientation changes still preserve journey progress.
 - Verified mobile scene positions against the original camera/parallax formulas, offscreen pause/resume, finale assembly/audio/speakers, still-mode round trip, booking clearance, and unchanged scrollY through a 390×667 → 390×727 resize. Build passes. No measured FPS claim; physical-device performance can vary.
+
+
+### Keep booking stable during form input
+- Hold the journey camera at the booking position during a field-editing session so browser focus scrolling and keyboard resizing cannot change chapters or make the form inert. Tabbing between fields keeps the same session.
+- Restore the matching document offset when editing ends, including the keyboard-closing resize transition. Explicit chapter navigation and intentional outside scrolling release the hold; still mode retains normal document behavior.
+- Observe journey layout changes to refresh cached dimensions when viewport units change, without adding layout reads to normal scrolling frames.
+- Verified actual field focus and text entry, a simulated 390×667 → 390×367 keyboard resize (document scrollY changed 4620 → 3120 while the booking camera stayed unchanged), field tabbing, Escape/blur restoring scrollY 4620, and navigation to the finale. No test inquiry was submitted. Build passes. Physical phone keyboard behavior remains a device-level follow-up.

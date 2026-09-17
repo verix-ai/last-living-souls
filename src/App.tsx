@@ -78,8 +78,12 @@ export default function App() {
   const mapButton = useRef<HTMLButtonElement>(null)
   const activeRef = useRef(0)
   const progressRef = useRef(0)
+  const bookingCamera = useRef<number | null>(null)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const goTo = useCallback((index: number, instant = false) => {
+    bookingCamera.current = null
+    const focused = document.activeElement
+    if (focused instanceof HTMLElement && focused.closest('.booking-form')) focused.blur()
     const bounded = Math.max(0, Math.min(chapters.length - 1, index))
     const root = journey.current
     if (!root) return
@@ -112,6 +116,9 @@ export default function App() {
     ]
     let frame = 0
     let scrollTimer: ReturnType<typeof setTimeout>
+    let blurFrame = 0
+    let focusReturn: { time: number; until: number } | null = null
+    const form = find('.booking-form')
     let lastScroll = window.scrollY
     let width = window.innerWidth
     let height = window.innerHeight
@@ -137,6 +144,7 @@ export default function App() {
       const scroll = window.scrollY
       let time = Math.max(0, Math.min(JOURNEY_END, (scroll - rootTop) / distance * JOURNEY_END))
       if (calm) time = CHAPTER_TIMES[chapterTops.reduce((selected, top, i) => top <= scroll + height * .5 ? i : selected, 0)]
+      if (!calm && bookingCamera.current !== null) time = bookingCamera.current
       if (time === lastTime) return
       lastTime = time
       const current = journeyFrame(time)
@@ -183,9 +191,63 @@ export default function App() {
       measure()
       // Browser chrome and the keyboard resize a phone's height while scrolling.
       // Preserve native momentum; reposition only for an actual width/orientation change.
-      if (!calm && widthChanged) window.scrollTo({ top: rootTop + distance * progressRef.current / JOURNEY_END, behavior: 'instant' })
+      if (!calm && (widthChanged || (focusReturn && performance.now() < focusReturn.until))) {
+        const time = bookingCamera.current ?? focusReturn?.time ?? progressRef.current
+        window.scrollTo({ top: rootTop + distance * time / JOURNEY_END, behavior: 'instant' })
+      }
       onScroll()
     }
+    const isField = (target: EventTarget | null) => target instanceof HTMLElement && !!target.closest('.booking-fields input, .booking-fields textarea')
+    const holdBooking = () => {
+      if (calm || activeRef.current !== 3 || bookingCamera.current !== null) return
+      bookingCamera.current = progressRef.current
+      focusReturn = null
+      clearTimeout(scrollTimer)
+      sceneWorld.classList.remove('traveling')
+    }
+    const releaseBooking = () => {
+      const time = bookingCamera.current
+      if (time === null) return
+      bookingCamera.current = null
+      // Keyboard closing can resize the viewport after blur. Preserve the same
+      // chapter through that short transition, unless the user starts navigating.
+      focusReturn = { time, until: performance.now() + 600 }
+      measure()
+      window.scrollTo({ top: rootTop + distance * time / JOURNEY_END, behavior: 'instant' })
+      lastScroll = window.scrollY
+      onScroll()
+    }
+    const onFocus = (event: FocusEvent) => {
+      if (isField(event.target)) holdBooking()
+    }
+    const onBlur = () => {
+      cancelAnimationFrame(blurFrame)
+      blurFrame = requestAnimationFrame(() => {
+        // Tabbing between fields is one editing session.
+        if (!form?.contains(document.activeElement)) releaseBooking()
+      })
+    }
+    const onPointer = (event: PointerEvent) => {
+      if (isField(event.target)) { holdBooking(); return }
+      if (event.target instanceof Node && form?.contains(event.target)) return
+      releaseBooking()
+      focusReturn = null
+    }
+    const onNavigationIntent = (event: Event) => {
+      if (event.target instanceof Node && form?.contains(event.target)) return
+      releaseBooking()
+      focusReturn = null
+    }
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && document.activeElement instanceof HTMLElement && form?.contains(document.activeElement)) document.activeElement.blur()
+      else if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key) && !isField(event.target)) onNavigationIntent(event)
+    }
+    form?.addEventListener('focusin', onFocus)
+    form?.addEventListener('focusout', onBlur)
+    document.addEventListener('pointerdown', onPointer, { capture: true, passive: true })
+    document.addEventListener('touchstart', onNavigationIntent, { passive: true })
+    document.addEventListener('wheel', onNavigationIntent, { passive: true })
+    document.addEventListener('keydown', onKey)
     // Keep the visible scene alive without animating decorations screens away.
     const decorations = [...sceneWorld.querySelectorAll<HTMLElement>('.member-card, .drifting-ship, .wandering-star, .lost-signal')]
     const visibility = new IntersectionObserver(entries => {
@@ -194,6 +256,8 @@ export default function App() {
     for (const element of decorations) visibility.observe(element)
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', resize)
+    const layout = new ResizeObserver(() => { measure(); onScroll() })
+    layout.observe(root)
     measure()
     update()
     return () => {
@@ -203,6 +267,15 @@ export default function App() {
       clearTimeout(scrollTimer)
       sceneWorld.classList.remove('traveling')
       visibility.disconnect()
+      layout.disconnect()
+      cancelAnimationFrame(blurFrame)
+      bookingCamera.current = null
+      form?.removeEventListener('focusin', onFocus)
+      form?.removeEventListener('focusout', onBlur)
+      document.removeEventListener('pointerdown', onPointer, true)
+      document.removeEventListener('touchstart', onNavigationIntent)
+      document.removeEventListener('wheel', onNavigationIntent)
+      document.removeEventListener('keydown', onKey)
       for (const element of decorations) element.style.removeProperty('animation-play-state')
     }
   }, [calm])
