@@ -119,3 +119,9 @@ The GoHighLevel integration runs server-side through the local Vite middleware a
 - The opening “Start with sound” button prepares the same audio element during an explicit user click, then holds it at the beginning until the finale. Visitors can still scroll without enabling audio; browser autoplay restrictions may require the finale play button.
 - Auto-start now uses the band's performance threshold instead of an almost exact last-pixel threshold. The attempt stays latched for the finale visit, so slight backward scrolling does not pause/restart the preview and manual pause is respected. Leaving the finale stops audio and resets the next visit.
 - Verified desktop start-with-sound → scroll to finale: playback advances and speaker animation runs; a small backward scroll keeps playback running, manual pause remains stopped on scrolling back to the end. Production build passes.
+
+
+### Booking connected locally
+- Identified the Last Living Souls subaccount in the authorized GoHighLevel browser session. Saved its Location ID alongside the existing PIT in both ignored `.env` files; neither credential is in the frontend.
+- Submitted one clearly labeled Website Booking Test through the running local `/api/booking` endpoint. Received HTTP 200 after the contact upsert and complete inquiry note both succeeded. No email/SMS was sent by this implementation.
+- All eight mocked booking integration tests pass. Vercel still needs both server environment variables when deploying; the static ChatGPT Sites deployment is unchanged.

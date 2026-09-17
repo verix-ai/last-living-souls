@@ -13,13 +13,13 @@ Never use a `VITE_` prefix for either value. The Vite server middleware handles 
 
 ## Vercel
 
-Deploy with the `web` directory as the Vercel project root, the Vite build, and `dist` output. `api/booking.ts` is the Node.js function for the same endpoint. Configure both environment keys in the intended Vercel deployment environments, then deploy. Do not put this form on a static-only host without an API implementation. The existing ChatGPT Sites deployment is static-only and has not been replaced with this unconnected form.
+Deploy with the `web` directory as the Vercel project root, the Vite build, and `dist` output. `api/booking.ts` is the Node.js function for the same endpoint. Configure both environment keys in the intended Vercel deployment environments, then deploy. Do not put this form on a static-only host without an API implementation. The existing ChatGPT Sites deployment is static-only and has not been replaced with this server-backed form.
 
 ## Delivery behavior
 
 The server validates the submission, upserts the contact through GoHighLevel, and adds the full inquiry as a contact note. Existing tags and custom fields are not overwritten. It returns success only after both upstream requests succeed. Errors retain the form values and show a retry message. It includes a honeypot, bounded body size, a per-instance throttle, and same-origin checks. The throttle is not a distributed WAF; additional production abuse controls can be configured in Vercel. No custom marketing enrollment or automated email/SMS is added by this code. Existing account workflows may respond to CRM contact changes.
 
-Run `npm run test:booking` for mocked integration tests (no live contacts created). They cover delivery, validation, method/origin/body limits, missing credentials, honeypot handling, upstream failures, partial failures, and throttling. Live subaccount delivery still requires the real PIT and Location ID.
+Run `npm run test:booking` for mocked integration tests (no live contacts created). They cover delivery, validation, method/origin/body limits, missing credentials, honeypot handling, upstream failures, partial failures, and throttling. Local live delivery was verified after configuring the real PIT and Last Living Souls Location ID: the endpoint returned success only after contact upsert and note creation. The labeled test contact is “Website Booking Test” (lls-booking-test@example.com); it is a connection check, not a real event inquiry. Configure both server environment keys separately when deploying to Vercel.
 
 API references:
 - https://marketplace.gohighlevel.com/docs/2023-02-21/ghl/contacts/upsert-contact/index.html
