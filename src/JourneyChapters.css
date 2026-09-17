@@ -237,3 +237,20 @@
   .booking-content>.eyebrow,.booking-content>h2 { flex:none; }
   .booking-form { flex:0 1 auto; min-height:0; overflow-y:auto; overscroll-behavior-y:contain; scrollbar-width:thin; scrollbar-color:#b893aa #171224; }
 }
+
+/* Center the booking introduction above its invitation on desktop. */
+@media(min-width:601px) and (min-height:501px) {
+  .booking-content,.calm .booking-content { top:12%; width:min(630px,90vw); display:flex; flex-direction:column; gap:0; }
+  .booking-content>.eyebrow { margin-bottom:12px; }
+  .booking-content h2 { font-size:clamp(40px,4vw,56px); margin:0 0 20px; }
+  .booking-content .booking-invitation { flex:none; width:100%; }
+}
+@media(min-width:601px) and (min-height:501px) and (max-height:700px) {
+  .booking-content,.calm .booking-content { top:88px; }
+  .booking-content h2 { font-size:38px; margin-bottom:16px; }
+  .booking-content h2 br { display:none; }
+  .booking-content h2 em { margin-left:8px; }
+  .booking-content .booking-invitation { padding:16px 24px; }
+  .booking-invitation h3 { font-size:30px; margin:14px 0 10px; }
+  .booking-invitation p { font-size:14px; line-height:1.5; margin-bottom:16px; }
+}
