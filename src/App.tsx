@@ -7,7 +7,7 @@ import SongPreview from './components/SongPreview'
 import type { FinaleSoundControl } from './components/SongPreview'
 import BandCards from './components/BandCards'
 import Shows from './components/Shows'
-import Booking from './components/Booking'
+import Booking, { BookingDialog } from './components/Booking'
 import AboutDialog from './components/AboutDialog'
 import { CHAPTER_TIMES, JOURNEY_END, journeyFrame } from './journeyTimeline'
 import './JourneyChapters.css'
@@ -69,6 +69,7 @@ export default function App() {
   const [calm, setCalm] = useState(readMotionPreference)
   const [mapOpen, setMapOpen] = useState(false)
   const [aboutOpen, setAboutOpen] = useState(false)
+  const [bookingOpen, setBookingOpen] = useState(false)
   const [signals, setSignals] = useState(readSignals)
   const [message, setMessage] = useState('')
   const [hint, setHint] = useState(false)
@@ -79,9 +80,11 @@ export default function App() {
   const activeRef = useRef(0)
   const progressRef = useRef(0)
   const bookingCamera = useRef<number | null>(null)
+  const bookingReturn = useRef<{ time: number; until: number } | null>(null)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const goTo = useCallback((index: number, instant = false) => {
     bookingCamera.current = null
+    bookingReturn.current = null
     const focused = document.activeElement
     if (focused instanceof HTMLElement && focused.closest('.booking-form')) focused.blur()
     const bounded = Math.max(0, Math.min(chapters.length - 1, index))
@@ -92,6 +95,19 @@ export default function App() {
     window.scrollTo({ top, behavior: instant || calm ? 'instant' : 'smooth' })
     setMapOpen(false)
     history.replaceState(null, '', `#${chapters[bounded].id}`)
+  }, [calm])
+  const openBooking = () => {
+    bookingCamera.current = progressRef.current
+    bookingReturn.current = null
+    setBookingOpen(true)
+  }
+  const resumeBooking = useCallback(() => {
+    const time = bookingCamera.current
+    bookingCamera.current = null
+    const root = journey.current
+    if (calm || time === null || !root) return
+    bookingReturn.current = { time, until: performance.now() + 700 }
+    window.scrollTo({ top: root.offsetTop + (root.offsetHeight - window.innerHeight) * time / JOURNEY_END, behavior: 'instant' })
   }, [calm])
   useEffect(() => {
     const root = journey.current
@@ -116,9 +132,6 @@ export default function App() {
     ]
     let frame = 0
     let scrollTimer: ReturnType<typeof setTimeout>
-    let blurFrame = 0
-    let focusReturn: { time: number; until: number } | null = null
-    const form = find('.booking-form')
     let lastScroll = window.scrollY
     let width = window.innerWidth
     let height = window.innerHeight
@@ -144,7 +157,7 @@ export default function App() {
       const scroll = window.scrollY
       let time = Math.max(0, Math.min(JOURNEY_END, (scroll - rootTop) / distance * JOURNEY_END))
       if (calm) time = CHAPTER_TIMES[chapterTops.reduce((selected, top, i) => top <= scroll + height * .5 ? i : selected, 0)]
-      if (!calm && bookingCamera.current !== null) time = bookingCamera.current
+      if (bookingCamera.current !== null) time = bookingCamera.current
       if (time === lastTime) return
       lastTime = time
       const current = journeyFrame(time)
@@ -191,63 +204,17 @@ export default function App() {
       measure()
       // Browser chrome and the keyboard resize a phone's height while scrolling.
       // Preserve native momentum; reposition only for an actual width/orientation change.
-      if (!calm && (widthChanged || (focusReturn && performance.now() < focusReturn.until))) {
-        const time = bookingCamera.current ?? focusReturn?.time ?? progressRef.current
+      const returning = bookingReturn.current && performance.now() < bookingReturn.current.until ? bookingReturn.current : null
+      if (!calm && bookingCamera.current === null && (widthChanged || returning)) {
+        const time = returning?.time ?? progressRef.current
         window.scrollTo({ top: rootTop + distance * time / JOURNEY_END, behavior: 'instant' })
       }
       onScroll()
     }
-    const isField = (target: EventTarget | null) => target instanceof HTMLElement && !!target.closest('.booking-fields input, .booking-fields textarea')
-    const holdBooking = () => {
-      if (calm || activeRef.current !== 3 || bookingCamera.current !== null) return
-      bookingCamera.current = progressRef.current
-      focusReturn = null
-      clearTimeout(scrollTimer)
-      sceneWorld.classList.remove('traveling')
-    }
-    const releaseBooking = () => {
-      const time = bookingCamera.current
-      if (time === null) return
-      bookingCamera.current = null
-      // Keyboard closing can resize the viewport after blur. Preserve the same
-      // chapter through that short transition, unless the user starts navigating.
-      focusReturn = { time, until: performance.now() + 600 }
-      measure()
-      window.scrollTo({ top: rootTop + distance * time / JOURNEY_END, behavior: 'instant' })
-      lastScroll = window.scrollY
-      onScroll()
-    }
-    const onFocus = (event: FocusEvent) => {
-      if (isField(event.target)) holdBooking()
-    }
-    const onBlur = () => {
-      cancelAnimationFrame(blurFrame)
-      blurFrame = requestAnimationFrame(() => {
-        // Tabbing between fields is one editing session.
-        if (!form?.contains(document.activeElement)) releaseBooking()
-      })
-    }
-    const onPointer = (event: PointerEvent) => {
-      if (isField(event.target)) { holdBooking(); return }
-      if (event.target instanceof Node && form?.contains(event.target)) return
-      releaseBooking()
-      focusReturn = null
-    }
-    const onNavigationIntent = (event: Event) => {
-      if (event.target instanceof Node && form?.contains(event.target)) return
-      releaseBooking()
-      focusReturn = null
-    }
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && document.activeElement instanceof HTMLElement && form?.contains(document.activeElement)) document.activeElement.blur()
-      else if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key) && !isField(event.target)) onNavigationIntent(event)
-    }
-    form?.addEventListener('focusin', onFocus)
-    form?.addEventListener('focusout', onBlur)
-    document.addEventListener('pointerdown', onPointer, { capture: true, passive: true })
+    const onNavigationIntent = () => { bookingReturn.current = null }
+    document.addEventListener('pointerdown', onNavigationIntent, { passive: true })
     document.addEventListener('touchstart', onNavigationIntent, { passive: true })
     document.addEventListener('wheel', onNavigationIntent, { passive: true })
-    document.addEventListener('keydown', onKey)
     // Keep the visible scene alive without animating decorations screens away.
     const decorations = [...sceneWorld.querySelectorAll<HTMLElement>('.member-card, .drifting-ship, .wandering-star, .lost-signal')]
     const visibility = new IntersectionObserver(entries => {
@@ -256,7 +223,7 @@ export default function App() {
     for (const element of decorations) visibility.observe(element)
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', resize)
-    const layout = new ResizeObserver(() => { measure(); onScroll() })
+    const layout = new ResizeObserver(resize)
     layout.observe(root)
     measure()
     update()
@@ -268,14 +235,9 @@ export default function App() {
       sceneWorld.classList.remove('traveling')
       visibility.disconnect()
       layout.disconnect()
-      cancelAnimationFrame(blurFrame)
-      bookingCamera.current = null
-      form?.removeEventListener('focusin', onFocus)
-      form?.removeEventListener('focusout', onBlur)
-      document.removeEventListener('pointerdown', onPointer, true)
+      document.removeEventListener('pointerdown', onNavigationIntent)
       document.removeEventListener('touchstart', onNavigationIntent)
       document.removeEventListener('wheel', onNavigationIntent)
-      document.removeEventListener('keydown', onKey)
       for (const element of decorations) element.style.removeProperty('animation-play-state')
     }
   }, [calm])
@@ -304,13 +266,14 @@ export default function App() {
   return <div className={`experience ${calm ? 'calm' : ''}`}>
     <a href="#wasteland" className="skip-link" onClick={e => { e.preventDefault(); goTo(0, true); setTimeout(() => document.querySelector<HTMLAnchorElement>('#wasteland .platform')?.focus(), 100) }}>Skip to music</a>
     <header className="hud-top"><div className="coordinates"><span className="signal-light" /> LOST IN SPACE. FOUND IN SOUND.</div><div className="top-actions"><button className="nav-shortcut" aria-haspopup="dialog" aria-expanded={aboutOpen} onClick={() => { setMapOpen(false); setAboutOpen(true) }}>About</button><button className="nav-shortcut booking-shortcut" onClick={() => goTo(3)}>Booking</button><button className={`map-toggle ${mapOpen ? 'selected' : ''}`} ref={mapButton} onClick={() => setMapOpen(!mapOpen)} aria-label={mapOpen ? 'Close world map' : 'Open world map'} aria-expanded={mapOpen} aria-controls="world-map"><PixelIcon name="map" /><span>{mapOpen ? 'Close' : 'World map'}</span></button></div></header>
+    <BookingDialog open={bookingOpen} onClose={() => setBookingOpen(false)} onResume={resumeBooking} />
     {aboutOpen && <AboutDialog onClose={() => setAboutOpen(false)} />}
     {mapOpen && <><button className="map-scrim" aria-label="Dismiss world map" onClick={() => setMapOpen(false)} /><nav className="world-map" id="world-map" aria-label="World chapters"><div className="map-heading"><span>CHOOSE YOUR DESTINATION</span><span>01—05</span></div>{chapters.map((chapter, index) => <button key={chapter.id} className={active === index ? 'current' : ''} aria-current={active === index ? 'location' : undefined} onClick={() => goTo(index)}><span className="map-number">0{index + 1}</span><span><strong>{chapter.name}</strong><small>{chapter.note}</small></span><span className="map-arrow">↗</span></button>)}</nav></>}
     <main ref={journey} className="journey" aria-label="The Last Signal, a journey with Last Living Souls"><div ref={world} className="world" data-scene={active} data-sound-playing={audioPlaying}><ContinuousWorld /><div className="world-track">
       <section className="scene scene-wasteland" id="wasteland" aria-labelledby="title-wasteland" inert={!calm && active !== 0}><div className="scene-content opening-content"><div className="eyebrow"><span className="tiny-cross">✦</span> A PSYCHEDELIC EXPEDITION <span className="tiny-cross">✦</span></div><h1 id="title-wasteland"><span className="sr-only">Last Living Souls</span><img className="hero-wordmark" src="/art/wordmark.png" alt="" width="800" height="289" /></h1><MusicLinks /><p className="opening-line">Somewhere between the end of the world<br className="desktop-break" /> and the start of a song.</p><button className="pixel-button journey-start" onClick={() => { finaleSound.current?.enable(); goTo(1) }} title="Enable the song to start automatically when the band reaches the stage">Start with sound <PixelIcon name="arrow" /></button><span className="scroll-instruction">SCROLL TO WANDER <span>↓</span></span></div><div className="scene-caption"><span>01 / HOME</span><span>THERE’S SOMETHING OUT THERE.</span></div>{signal(0)}</section>
       <section className="scene scene-band" id="band" aria-labelledby="title-band" inert={!calm && active !== 1}><BandCards /><div className="scene-caption"><span>FIVE SOULS / ONE SOUND</span><span>THE PEOPLE BEHIND THE SIGNAL.</span></div>{signal(1)}</section>
       <section className="scene scene-shows" id="shows" aria-labelledby="title-shows" inert={!calm && active !== 2}><Shows onBook={() => goTo(3)} /><div className="scene-caption"><span>03 / LIVE SHOWS</span><span>GOOD PEOPLE. LOUD MUSIC.</span></div>{signal(3)}</section>
-      <section className="scene scene-booking" id="booking" aria-labelledby="title-booking" inert={!calm && active !== 3}><Booking /><div className="scene-caption"><span>04 / BOOKING</span><span>LET’S MAKE SOME NOISE.</span></div></section>
+      <section className="scene scene-booking" id="booking" aria-labelledby="title-booking" inert={!calm && active !== 3}><Booking onOpen={openBooking} /><div className="scene-caption"><span>04 / BOOKING</span><span>LET’S MAKE SOME NOISE.</span></div></section>
       <section className="scene scene-portal" id="portal" aria-labelledby="title-portal" inert={!calm && active !== 4}><div className="scene-content portal-content"><div className="eyebrow">05 / THE PERFORMANCE</div><h2 id="title-portal">The end is<br /><em>another beginning.</em></h2><SongPreview soundControl={finaleSound} active={active === 4} arrived={stageReady} onPlayingChange={setAudioPlaying} /><div className="social-links">{(['instagram', 'tiktok', 'facebook'] as const).map(name => <ExternalLink key={name} href={links[name]} className={`social-key ${name}`} label={`Last Living Souls on ${name} (opens in a new tab)`}><PixelIcon name={name} /><span>{name === 'tiktok' ? 'TikTok' : name[0].toUpperCase() + name.slice(1)}</span></ExternalLink>)}</div><div className={`completion ${signals.length === 3 ? 'complete' : ''}`}><PixelIcon name="star" /><span>{signals.length === 3 ? 'YOUR LIGHT FOUND US.' : `YOUR LIGHT: ${signals.length} / 3 STARS FOUND`}</span></div><button className="text-link" onClick={() => goTo(0)}>Wander again <span>↶</span></button></div><div className="scene-caption"><span>LAST LIVING SOULS © {new Date().getFullYear()}</span><span>THANKS FOR GETTING LOST WITH US.</span></div></section>
     </div><BandTravelers /><div className="scanlines" aria-hidden="true" /></div></main>
     <footer className="hud-bottom"><div className="bottom-left"><button className="motion-button" onClick={toggleMotion} aria-pressed={calm} title="Switch between the animated journey and a still scrolling view"><span className="motion-symbol">{calm ? 'Ⅱ' : '≈'}</span><span>{calm ? 'Still mode' : 'Motion on'}</span></button><span className="hud-divider" /><button className="signal-counter" onClick={() => { setHint(!hint); announce(hint ? 'HINTS OFF. HAPPY WANDERING.' : 'LOOK FOR THE THREE GLOWING GOLD STARS.') }} aria-pressed={hint} aria-label={`${signals.length} of 3 Your Light stars found. ${hint ? 'Hide' : 'Show'} hints`}><PixelIcon name="star" /><span>{signals.length}<span className="dim"> / 3</span></span><span className="counter-label">YOUR LIGHT</span></button></div><nav className="chapter-dots" aria-label="Quick chapter navigation">{chapters.map((chapter, i) => <button key={chapter.id} className={active === i ? 'active' : ''} onClick={() => goTo(i)} aria-label={`${i + 1}. ${chapter.name}`} aria-current={active === i ? 'location' : undefined}><span /><span className="dot-label">{chapter.name}</span></button>)}</nav><button className="next-chapter" onClick={() => goTo(active === 4 ? 0 : active + 1)}><span>{active === 4 ? 'Back to the beginning' : 'Keep exploring'}</span><span className="next-arrow">→</span></button><div className="journey-progress" aria-hidden="true"><div ref={bar} /></div></footer>
