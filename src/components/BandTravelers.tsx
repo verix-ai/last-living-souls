@@ -7,7 +7,7 @@ const members = [
   { id: 'norris', name: 'Norris', role: 'Congas', height: .86 },
   { id: 'drew', name: 'Drew', role: 'Bass', height: 1 },
   { id: 'daniel', name: 'Daniel', role: 'Lead vocals / lead guitar', height: .97 },
-  { id: 'dan', name: 'Dan', role: 'Drums', height: .8 },
+  { id: 'dan', name: 'Dan', role: 'Drums', height: .86 },
   { id: 'zane', name: 'Zena', role: 'Keys', height: 1 },
 ]
 
