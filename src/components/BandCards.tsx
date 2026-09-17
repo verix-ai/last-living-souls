@@ -14,7 +14,7 @@ export default function BandCards() {
     </div>
     <div className="band-card-track">
       {bandMembers.map((member, i) => <article className={`member-card card-${member.id}`} key={member.id} style={{ '--float-delay': `${i * -.8}s` } as CSSProperties}>
-        <div className="member-portrait"><img src={`/art/band/heads/${member.id}.png`} width="96" height="96" alt={`${member.name}'s pixel-art portrait`} /></div>
+        <div className="member-portrait"><img src={`/art/band/heads/${member.id}.png${member.id === 'daniel' ? '?v=western-1' : ''}`} width="96" height="96" alt={`${member.name}'s pixel-art portrait`} /></div>
         <span className="member-number">0{i + 1} / LAST LIVING SOULS</span><h3>{member.name}</h3><span className="member-role">{member.role}</span><p>{member.intro}</p>
       </article>)}
     </div>
