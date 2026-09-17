@@ -1,0 +1,26 @@
+.about-dialog { position:fixed; inset:0; width:min(740px,calc(100% - 40px)); max-width:none; max-height:calc(100dvh - 48px); margin:auto; padding:0; border:2px solid #ad879e; background:#171125; color:var(--cream); overflow:visible; box-shadow:8px 8px 0 #08061699,0 0 60px #a064aa26; }
+.about-dialog::backdrop { background:#080615cb; backdrop-filter:blur(7px); }
+.about-panel { max-height:calc(100dvh - 52px); overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; scrollbar-color:#ad879e #171125; }
+.about-panel-top { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 20px 12px 28px; position:sticky; top:0; z-index:1; background:#171125; border-bottom:1px solid #ad879e55; }
+.about-panel-top>span { font:15px 'VT323',monospace; letter-spacing:1.5px; color:#d5b2c8; }
+.experience .about-close { display:grid; place-items:center; flex:none; width:44px; height:44px; border:1px solid #ad879e77; background:#251a32; color:var(--cream); font:32px/1 'VT323',monospace; }
+.experience .about-close:hover { background:#45304e; color:var(--gold); }
+.about-story { padding:28px 40px 34px; }
+.about-kicker { display:block; font:15px 'VT323',monospace; color:var(--gold); letter-spacing:2px; }
+.about-story h2 { margin:12px 0 24px; font:clamp(40px,5vw,56px)/.95 'VT323',monospace; text-transform:uppercase; letter-spacing:1px; }
+.about-story h2 em { color:var(--pink); font-style:normal; }
+.about-story h2:focus { outline:none; }
+.about-story p { margin:0 0 20px; font:15px/1.85 'DM Sans',sans-serif; color:#e1d2e1; }
+.about-story p:last-of-type { margin-bottom:0; }
+.about-signoff { margin-top:28px; padding-top:22px; border-top:1px solid #ad879e55; color:var(--gold); font:15px 'VT323',monospace; letter-spacing:1.2px; text-align:center; }
+@media(max-width:600px) {
+  .about-dialog { width:calc(100% - 24px); max-height:calc(100dvh - 32px); box-shadow:4px 4px 0 #08061699; }
+  .about-panel { max-height:calc(100dvh - 36px); }
+  .about-panel-top { padding:10px 12px 10px 20px; gap:8px; }
+  .about-panel-top>span { font-size:13px; letter-spacing:1px; }
+  .about-story { padding:24px 22px; }
+  .about-kicker { font-size:13px; letter-spacing:1.5px; }
+  .about-story h2 { font-size:40px; }
+  .about-story p { font-size:14px; line-height:1.85; }
+  .about-signoff { font-size:12px; letter-spacing:.8px; }
+}

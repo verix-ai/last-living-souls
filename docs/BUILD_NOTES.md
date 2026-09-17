@@ -125,3 +125,9 @@ The GoHighLevel integration runs server-side through the local Vite middleware a
 - Identified the Last Living Souls subaccount in the authorized GoHighLevel browser session. Saved its Location ID alongside the existing PIT in both ignored `.env` files; neither credential is in the frontend.
 - Submitted one clearly labeled Website Booking Test through the running local `/api/booking` endpoint. Received HTTP 200 after the contact upsert and complete inquiry note both succeeded. No email/SMS was sent by this implementation.
 - All eight mocked booking integration tests pass. Vercel still needs both server environment variables when deploying; the static ChatGPT Sites deployment is unchanged.
+
+
+### About biography popup (local)
+- About now opens a native modal with the supplied three-paragraph biography verbatim, matching the pixel headings and plum/cream/pink palette. The band introduction chapter remains in the journey and world map.
+- The modal locks background scrolling, contains keyboard focus, closes with Escape, its close button, or backdrop, and restores focus to About without moving the journey. On phones the biography scrolls within the panel while the close control stays visible.
+- Verified desktop presentation, Escape/focus return, 390px mobile layout, complete biography scrolling, close button, and unchanged background scroll position. Production build passes.

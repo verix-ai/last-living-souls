@@ -8,6 +8,7 @@ import type { FinaleSoundControl } from './components/SongPreview'
 import BandCards from './components/BandCards'
 import Shows from './components/Shows'
 import Booking from './components/Booking'
+import AboutDialog from './components/AboutDialog'
 import { CHAPTER_TIMES, JOURNEY_END, journeyFrame } from './journeyTimeline'
 import './JourneyChapters.css'
 
@@ -67,6 +68,7 @@ export default function App() {
   const [audioPlaying, setAudioPlaying] = useState(false)
   const [calm, setCalm] = useState(readMotionPreference)
   const [mapOpen, setMapOpen] = useState(false)
+  const [aboutOpen, setAboutOpen] = useState(false)
   const [signals, setSignals] = useState(readSignals)
   const [message, setMessage] = useState('')
   const [hint, setHint] = useState(false)
@@ -166,7 +168,8 @@ export default function App() {
   const signal = (index: number) => <button className={`lost-signal signal-${index} ${signals.includes(index) ? 'collected' : ''} ${hint ? 'hinted' : ''}`} onClick={() => collect(index)} aria-label={signals.includes(index) ? 'Star found' : `Collect the hidden star in ${chapters[index === 3 ? 2 : index].name}`} disabled={signals.includes(index)}><PixelIcon name="star" /><span>{signals.includes(index) ? 'FOUND' : 'YOUR LIGHT'}</span></button>
   return <div className={`experience ${calm ? 'calm' : ''}`}>
     <a href="#wasteland" className="skip-link" onClick={e => { e.preventDefault(); goTo(0, true); setTimeout(() => document.querySelector<HTMLAnchorElement>('#wasteland .platform')?.focus(), 100) }}>Skip to music</a>
-    <header className="hud-top"><div className="coordinates"><span className="signal-light" /> LOST IN SPACE. FOUND IN SOUND.</div><div className="top-actions"><button className="nav-shortcut" onClick={() => goTo(1)}>About</button><button className="nav-shortcut booking-shortcut" onClick={() => goTo(3)}>Booking</button><button className={`map-toggle ${mapOpen ? 'selected' : ''}`} ref={mapButton} onClick={() => setMapOpen(!mapOpen)} aria-label={mapOpen ? 'Close world map' : 'Open world map'} aria-expanded={mapOpen} aria-controls="world-map"><PixelIcon name="map" /><span>{mapOpen ? 'Close' : 'World map'}</span></button></div></header>
+    <header className="hud-top"><div className="coordinates"><span className="signal-light" /> LOST IN SPACE. FOUND IN SOUND.</div><div className="top-actions"><button className="nav-shortcut" aria-haspopup="dialog" aria-expanded={aboutOpen} onClick={() => { setMapOpen(false); setAboutOpen(true) }}>About</button><button className="nav-shortcut booking-shortcut" onClick={() => goTo(3)}>Booking</button><button className={`map-toggle ${mapOpen ? 'selected' : ''}`} ref={mapButton} onClick={() => setMapOpen(!mapOpen)} aria-label={mapOpen ? 'Close world map' : 'Open world map'} aria-expanded={mapOpen} aria-controls="world-map"><PixelIcon name="map" /><span>{mapOpen ? 'Close' : 'World map'}</span></button></div></header>
+    {aboutOpen && <AboutDialog onClose={() => setAboutOpen(false)} />}
     {mapOpen && <><button className="map-scrim" aria-label="Dismiss world map" onClick={() => setMapOpen(false)} /><nav className="world-map" id="world-map" aria-label="World chapters"><div className="map-heading"><span>CHOOSE YOUR DESTINATION</span><span>01—05</span></div>{chapters.map((chapter, index) => <button key={chapter.id} className={active === index ? 'current' : ''} aria-current={active === index ? 'location' : undefined} onClick={() => goTo(index)}><span className="map-number">0{index + 1}</span><span><strong>{chapter.name}</strong><small>{chapter.note}</small></span><span className="map-arrow">↗</span></button>)}</nav></>}
     <main ref={journey} className="journey" aria-label="The Last Signal, a journey with Last Living Souls"><div ref={world} className="world" data-scene={active} data-sound-playing={audioPlaying}><ContinuousWorld /><div className="world-track">
       <section className="scene scene-wasteland" id="wasteland" aria-labelledby="title-wasteland" inert={!calm && active !== 0}><div className="scene-content opening-content"><div className="eyebrow"><span className="tiny-cross">✦</span> A PSYCHEDELIC EXPEDITION <span className="tiny-cross">✦</span></div><h1 id="title-wasteland"><span className="sr-only">Last Living Souls</span><img className="hero-wordmark" src="/art/wordmark.png" alt="" width="800" height="289" /></h1><MusicLinks /><p className="opening-line">Somewhere between the end of the world<br className="desktop-break" /> and the start of a song.</p><button className="pixel-button journey-start" onClick={() => { finaleSound.current?.enable(); goTo(1) }} title="Enable the song to start automatically when the band reaches the stage">Start with sound <PixelIcon name="arrow" /></button><span className="scroll-instruction">SCROLL TO WANDER <span>↓</span></span></div><div className="scene-caption"><span>01 / HOME</span><span>THERE’S SOMETHING OUT THERE.</span></div>{signal(0)}</section>
