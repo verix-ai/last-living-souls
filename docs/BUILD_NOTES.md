@@ -113,3 +113,9 @@ The band heading now travels with the camera over the entire introduction stretc
 Replaced the top Listen shortcut with About and Booking. Added a fifth journey destination for a booking contact form between live shows and the performance, plus a booking link below the show cards. Updated world map, chapter dots, legacy about hash, timeline, still mode, final-stage index and player activation.
 
 The GoHighLevel integration runs server-side through the local Vite middleware and a Vercel function. Environment placeholders are ready in ignored `.env`; no real PIT or Location ID has been supplied yet. The eight mocked integration tests pass. The form retains input on delivery failure and only reports success after contact and note storage. See BOOKING.md for setup and current testing limitations. These changes are local pending credentials and live connection testing; the current static Sites deployment is not updated with an unusable contact form.
+
+
+### Desktop finale audio (local)
+- The opening “Start with sound” button prepares the same audio element during an explicit user click, then holds it at the beginning until the finale. Visitors can still scroll without enabling audio; browser autoplay restrictions may require the finale play button.
+- Auto-start now uses the band's performance threshold instead of an almost exact last-pixel threshold. The attempt stays latched for the finale visit, so slight backward scrolling does not pause/restart the preview and manual pause is respected. Leaving the finale stops audio and resets the next visit.
+- Verified desktop start-with-sound → scroll to finale: playback advances and speaker animation runs; a small backward scroll keeps playback running, manual pause remains stopped on scrolling back to the end. Production build passes.
