@@ -109,9 +109,6 @@
   .show-cards { gap:14px; margin-top:12px; }.show-card { min-height:145px; padding:14px; }
   .show-date { font-size:12px; }.show-date strong { font-size:31px; }.show-status { font-size:9px; margin:7px 0; }.show-card h3 { font-size:23px; margin-bottom:8px; }.show-card p { font-size:11px; }
 }
-@media(max-height:500px) and (min-width:601px) {
-  .world[data-scene="1"] .band-travelers,.world[data-scene="2"] .band-travelers { --band-size:40px; left:48%; }
-}
 
 /* Portraits live along the world path. Only the outer screen clips the world. */
 .band-content { left:54vw; width:90vw; transform:translateX(calc(-50% + var(--band-heading-travel, 0px))); will-change:transform; }
@@ -169,7 +166,6 @@
   .booking-pass h3 { font-size:25px; margin:10px 0; }.booking-pass p { font-size:11px; line-height:1.35; margin-bottom:10px; }
   .booking-details { display:none; }.booking-pass .pixel-button { min-height:40px; padding:8px 14px; font-size:17px!important; }.booking-channel { font-size:9px; margin-top:9px; }
   .shows-booking-link { font-size:15px!important; min-height:36px; margin-top:5px; }
-  .world[data-scene="3"] .band-travelers { --band-size:40px; left:48%; }
 }
 /* The inquiry form shares the same server endpoint locally and on Vercel. */
 .booking-content { top:17%; width:min(1000px,90vw); display:grid; grid-template-columns:1fr 1.15fr; gap:12px 42px; align-items:center; }
@@ -205,7 +201,6 @@
   .booking-fields input { min-height:34px; height:34px; padding:5px 7px; }.booking-fields textarea { min-height:58px; height:58px; }
   .booking-fields input,.booking-fields textarea { margin-top:3px; }.booking-form-footer>.pixel-button { min-height:40px; padding:9px 12px; font-size:17px!important; }
   .booking-form-footer { gap:8px; }.booking-form-footer>span { font-size:9px; }.booking-form .booking-pass-top { font-size:10px; padding-bottom:8px; }
-  .world[data-scene="3"] .band-travelers { --band-size:60px; }
 }
 @media(max-height:500px) and (min-width:601px) {
   .booking-content { top:20%; grid-template-columns:.8fr 1.3fr; gap:8px 24px; }.booking-form { padding:10px 16px; }
@@ -228,4 +223,17 @@
 @media(max-height:730px) and (max-width:600px) {
   .booking-content h2 { font-size:clamp(26px,7.5vw,30px); }
   .booking-content h2 br { display:none; }.booking-content h2 em { margin-left:7px; }
+}
+
+/* Reserve the same walking lane through booking; only the form may scroll. */
+@media(max-width:600px) {
+  .booking-content,.calm .booking-content {
+    top:max(82px,11%);
+    max-height:calc(100% - max(82px,11%) - var(--ground-height) - var(--band-size) - 18px);
+    display:flex;
+    flex-direction:column;
+    gap:0;
+  }
+  .booking-content>.eyebrow,.booking-content>h2 { flex:none; }
+  .booking-form { flex:0 1 auto; min-height:0; overflow-y:auto; overscroll-behavior-y:contain; scrollbar-width:thin; scrollbar-color:#b893aa #171224; }
 }

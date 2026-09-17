@@ -1,5 +1,6 @@
+/* One viewport-based size for every chapter, including booking and the finale. */
+.world { --band-size: 146px; }
 .band-travelers {
-  --band-size: 146px;
   position: absolute;
   z-index: 6;
   bottom: 108px;
@@ -39,16 +40,19 @@
 .calm .band-travelers { position: fixed; }
 .calm .band-sprite { background-position: 0 0; transform: none !important; }
 
-@media (max-width: 1000px) { .band-travelers { --band-size: 124px; } }
+@media (max-width: 1000px) { .world { --band-size: 124px; } }
 @media (max-width: 600px) {
-  .band-travelers { --band-size: clamp(76px, 22vw, 96px); bottom: 108px; gap: 0; }
+  .world { --band-size: clamp(76px, 22vw, 96px); }
+  .band-travelers { bottom: 108px; gap: 0; }
   .band-member { width: calc(var(--band-size) * .71); }
 }
 @media (max-height: 730px) and (max-width: 600px) {
-  .band-travelers { --band-size: 76px; bottom: 103px; }
+  .world { --band-size: 76px; }
+  .band-travelers { bottom: 103px; }
 }
 @media (max-height: 500px) and (min-width: 601px) {
-  .band-travelers { --band-size: 74px; bottom: 63px; left: 22%; }
+  .world { --band-size: 74px; }
+  .band-travelers { bottom: 63px; left: 22%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .world.traveling .band-member:nth-child(n) .band-sprite { background-position: 0 0; transform: none; }

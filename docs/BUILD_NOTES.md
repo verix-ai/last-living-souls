@@ -131,3 +131,9 @@ The GoHighLevel integration runs server-side through the local Vite middleware a
 - About now opens a native modal with the supplied three-paragraph biography verbatim, matching the pixel headings and plum/cream/pink palette. The band introduction chapter remains in the journey and world map.
 - The modal locks background scrolling, contains keyboard focus, closes with Escape, its close button, or backdrop, and restores focus to About without moving the journey. On phones the biography scrolls within the panel while the close control stays visible.
 - Verified desktop presentation, Escape/focus return, 390px mobile layout, complete biography scrolling, close button, and unchanged background scroll position. Production build passes.
+
+
+### Consistent mobile band scale
+- Removed chapter-specific sprite sizes in booking and landscape introduction/show scenes. All chapters now inherit one viewport-based band size from the world, preserving the walking-to-performance transition.
+- Mobile booking reserves a clear lane based on the same band and ground dimensions. The form scrolls internally only when a short viewport needs it; characters are never shrunk to make the form fit.
+- Verified booking at 390×667, 375×568, 390×844, and 844×390; confirmed identical 76px scale in Shows, Booking, and Performance on the compact phone, clear form/character spacing, and reachable submit control. Production build passes.
