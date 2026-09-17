@@ -152,3 +152,9 @@ The GoHighLevel integration runs server-side through the local Vite middleware a
 - Restore the matching document offset when editing ends, including the keyboard-closing resize transition. Explicit chapter navigation and intentional outside scrolling release the hold; still mode retains normal document behavior.
 - Observe journey layout changes to refresh cached dimensions when viewport units change, without adding layout reads to normal scrolling frames.
 - Verified actual field focus and text entry, a simulated 390×667 → 390×367 keyboard resize (document scrollY changed 4620 → 3120 while the booking camera stayed unchanged), field tabbing, Escape/blur restoring scrollY 4620, and navigation to the finale. No test inquiry was submitted. Build passes. Physical phone keyboard behavior remains a device-level follow-up.
+
+
+### Stable band sprites while scrolling
+- Replace repainted CSS sprite-sheet backgrounds with eagerly loaded image sheets in fixed-size clipping boxes. Walking changes only the image transform, with a dedicated ensemble stacking context and persistent image layers.
+- Keep guitar performance images mounted and decode them before hiding the corresponding walking sprite. A failed performance image leaves the walking character visible.
+- All five source sheets contain valid artwork in every frame. Verified the five loaded images, mobile home/profile visuals, finale handoff with both performance images ready, and all five walking sprites visible after reverse scrolling. Production build passes. Physical-phone flicker remains a device-level follow-up; no claim of measured FPS or exhaustive compositor coverage.
