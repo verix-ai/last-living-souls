@@ -5,7 +5,7 @@ export const bandMembers = [
   { id: 'drew', name: 'Drew', role: 'Bass', intro: 'Drew holds down the bass for Last Living Souls. The low end of the band’s psychedelic sound.' },
   { id: 'dan', name: 'Dan', role: 'Drums', intro: 'Meet Dan, the drummer behind Last Living Souls. Keeping the whole journey moving, one beat at a time.' },
   { id: 'norris', name: 'Norris', role: 'Congas', intro: 'Norris joins the rhythm section on congas. Another layer of percussion in the Last Living Souls sound.' },
-  { id: 'zane', name: 'Zane', role: 'Keys', intro: 'Zane plays keys for Last Living Souls. Find him behind the keyboard when the band takes the stage.' },
+  { id: 'zane', name: 'Zena', role: 'Keys', intro: 'Zena plays keys for Last Living Souls. Find him behind the keyboard when the band takes the stage.' },
 ]
 export default function BandCards() {
   return <>
