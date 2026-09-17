@@ -1,4 +1,5 @@
-/* One viewport-based size for every chapter, including booking and the finale. */
+/* Character scale must not depend on dynamic viewport height: mobile browser
+   chrome can cross height breakpoints while the visitor scrolls. */
 .world { --band-size: 146px; }
 .band-ensemble { position:absolute; inset:0; z-index:6; pointer-events:none; isolation:isolate; }
 .band-travelers {
@@ -60,12 +61,15 @@
   .band-travelers { bottom: 108px; gap: 0; }
   .band-member { width: calc(var(--band-size) * .71); }
 }
+/* Wide touch screens use the stable small viewport dimension so rotated
+   phones stay compact without reacting to browser-toolbar movement. */
+@media (min-width: 601px) and (max-width: 1000px) and (pointer: coarse) {
+  .world { --band-size: clamp(74px, 18svmin, 124px); }
+}
 @media (max-height: 730px) and (max-width: 600px) {
-  .world { --band-size: 76px; }
   .band-travelers { bottom: 103px; }
 }
 @media (max-height: 500px) and (min-width: 601px) {
-  .world { --band-size: 74px; }
   .band-travelers { bottom: 63px; left: 22%; }
 }
 @media (prefers-reduced-motion: reduce) {
