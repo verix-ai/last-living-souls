@@ -90,59 +90,121 @@ export default function App() {
     history.replaceState(null, '', `#${chapters[bounded].id}`)
   }, [calm])
   useEffect(() => {
+    const root = journey.current
+    const sceneWorld = world.current
+    if (!root || !sceneWorld) return
+    const find = (selector: string) => sceneWorld.querySelector<HTMLElement>(selector)
+    const track = find('.world-track')
+    const heading = find('.band-content')
+    const travelers = find('.band-travelers')
+    const ensemble = find('.band-ensemble')
+    const portal = find('.landmark-portal')
+    const drifters = find('.cosmic-drifters')
+    const layers = [
+      { element: find('.cosmic-sky'), speed: .05 },
+      { element: find('.ridge-far'), speed: .15, offset: -.1, y: '-5svh' },
+      { element: find('.ridge-near'), speed: .29 },
+      { element: find('.landmark-rail'), speed: 1, foreground: true },
+      { element: find('.ground-texture'), speed: 1, foreground: true },
+      { element: find('.foreground-rail'), speed: 1, foreground: true },
+      { element: find('.ship-rail'), speed: .65 },
+      { element: find('.bright-star-rail'), speed: .45 },
+    ]
     let frame = 0
     let scrollTimer: ReturnType<typeof setTimeout>
     let lastScroll = window.scrollY
+    let width = window.innerWidth
+    let height = window.innerHeight
+    let rootTop = 0, distance = 1, bandDistance = 0
+    let chapterTops: number[] = []
+    let lastTime = NaN, lastArrival = NaN, lastStep = -1
+    let ready: boolean | undefined
+    const measure = () => {
+      // Layout reads and scene widths only change on resize, never mid-scroll.
+      width = window.innerWidth
+      height = window.innerHeight
+      rootTop = root.offsetTop
+      distance = Math.max(1, root.offsetHeight - height)
+      if (calm) chapterTops = [...root.querySelectorAll<HTMLElement>('.scene')].map(element => element.getBoundingClientRect().top + window.scrollY)
+      const stride = Math.max(320, width * (width <= 600 ? .96 : .38))
+      bandDistance = stride * 4
+      sceneWorld.style.setProperty('--band-stride', `${stride}px`)
+      sceneWorld.style.setProperty('--band-distance', `${bandDistance}px`)
+      lastTime = NaN
+    }
     const update = () => {
       frame = 0
-      const root = journey.current
-      if (!root) return
-      let time = Math.max(0, Math.min(JOURNEY_END, (window.scrollY - root.offsetTop) / Math.max(1, root.offsetHeight - window.innerHeight) * JOURNEY_END))
-      if (calm) { const chapter = [...root.querySelectorAll<HTMLElement>('.scene')].reduce((selected, element, i) => element.getBoundingClientRect().top <= window.innerHeight * .5 ? i : selected, 0); time = CHAPTER_TIMES[chapter] }
+      const scroll = window.scrollY
+      let time = Math.max(0, Math.min(JOURNEY_END, (scroll - rootTop) / distance * JOURNEY_END))
+      if (calm) time = CHAPTER_TIMES[chapterTops.reduce((selected, top, i) => top <= scroll + height * .5 ? i : selected, 0)]
+      if (time === lastTime) return
+      lastTime = time
       const current = journeyFrame(time)
       const index = Math.round(current.scene)
       const progress = current.world
       progressRef.current = time
       if (activeRef.current !== index) { activeRef.current = index; setActive(index) }
-      // The introductions occupy an actual stretch of the world, not a clipped carousel.
-      const stride = Math.max(320, window.innerWidth * (window.innerWidth <= 600 ? .96 : .38))
-      const bandDistance = stride * 4
-      world.current?.style.setProperty('--band-stride', `${stride}px`)
-      world.current?.style.setProperty('--band-distance', `${bandDistance}px`)
-      // Carry the title over the whole lineup with a gentle horizontal drift.
-      world.current?.style.setProperty('--band-heading-travel', `${current.band * (bandDistance - window.innerWidth * .08)}px`)
-      world.current?.style.setProperty('--travel', `${-current.scene * window.innerWidth - current.band * bandDistance}px`)
-      world.current?.style.setProperty('--position', String(progress))
-      // The final stretch brings the same travelers into their stage positions.
-      const arrival = Math.max(0, Math.min(1, (progress - 3.55) / .45))
-      world.current?.style.setProperty('--stage-arrival', String(arrival))
-      if (world.current) { world.current.dataset.performing = String(progress >= 3.985); world.current.dataset.equipped = String(progress >= 3.94) }
-      setStageReady(progress >= 3.985)
-      // Step cadence follows the distance the path travels under the band.
-      const groundDistance = progress * window.innerWidth * (window.innerWidth <= 600 ? 1.5 : 1)
-      world.current?.style.setProperty('--walk-step', String(Math.floor(groundDistance / 26) % 2))
-      if (bar.current) bar.current.style.transform = `scaleX(${time / JOURNEY_END})`
-    }
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update)
-      const delta = window.scrollY - lastScroll
-      lastScroll = window.scrollY
-      if (calm || Math.abs(delta) < .5) return
-      if (world.current) {
-        world.current.dataset.direction = delta > 0 ? 'right' : 'left'
-        world.current.classList.add('traveling')
+      // Transform the moving elements directly rather than invalidating inherited
+      // custom properties across every card, form field, and decorative object.
+      if (track) track.style.transform = calm ? 'none' : `translate3d(${-current.scene * width - current.band * bandDistance}px,0,0)`
+      if (heading) heading.style.transform = calm ? 'none' : `translate3d(calc(-50% + ${current.band * (bandDistance - width * .08)}px),0,0)`
+      for (const layer of layers) {
+        const speed = layer.speed * (layer.foreground && width <= 600 ? 1.5 : 1)
+        if (layer.element) layer.element.style.transform = `translate3d(${(-progress * speed + (layer.offset ?? 0)) * width}px,${layer.y ?? '0'},0)`
       }
-      clearTimeout(scrollTimer)
-      scrollTimer = setTimeout(() => world.current?.classList.remove('traveling'), 180)
+      const arrival = Math.max(0, Math.min(1, (progress - 3.55) / .45))
+      if (arrival !== lastArrival) {
+        lastArrival = arrival
+        ensemble?.style.setProperty('--stage-arrival', String(arrival))
+        if (portal) portal.style.opacity = String(1 - arrival)
+        if (drifters) drifters.style.opacity = String(.75 - arrival * .4)
+      }
+      const performing = progress >= 3.985
+      if (sceneWorld.dataset.performing !== String(performing)) sceneWorld.dataset.performing = String(performing)
+      const equipped = String(progress >= 3.94)
+      if (sceneWorld.dataset.equipped !== equipped) sceneWorld.dataset.equipped = equipped
+      if (ready !== performing) { ready = performing; setStageReady(performing) }
+      const step = Math.floor(progress * width * (width <= 600 ? 1.5 : 1) / 26) % 2
+      if (step !== lastStep) { lastStep = step; travelers?.style.setProperty('--walk-step', String(step)) }
+      if (bar.current) bar.current.style.transform = `scaleX(${time / JOURNEY_END})`
+      const delta = scroll - lastScroll
+      lastScroll = scroll
+      if (!calm && Math.abs(delta) >= .5) {
+        const direction = delta > 0 ? 'right' : 'left'
+        if (sceneWorld.dataset.direction !== direction) sceneWorld.dataset.direction = direction
+        if (!sceneWorld.classList.contains('traveling')) sceneWorld.classList.add('traveling')
+        clearTimeout(scrollTimer)
+        scrollTimer = setTimeout(() => sceneWorld.classList.remove('traveling'), 180)
+      }
     }
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update) }
     const resize = () => {
-      if (!calm && journey.current) window.scrollTo({ top: journey.current.offsetTop + (journey.current.offsetHeight - innerHeight) * progressRef.current / JOURNEY_END, behavior: 'instant' })
-      update()
+      const widthChanged = width !== window.innerWidth
+      measure()
+      // Browser chrome and the keyboard resize a phone's height while scrolling.
+      // Preserve native momentum; reposition only for an actual width/orientation change.
+      if (!calm && widthChanged) window.scrollTo({ top: rootTop + distance * progressRef.current / JOURNEY_END, behavior: 'instant' })
+      onScroll()
     }
+    // Keep the visible scene alive without animating decorations screens away.
+    const decorations = [...sceneWorld.querySelectorAll<HTMLElement>('.member-card, .drifting-ship, .wandering-star, .lost-signal')]
+    const visibility = new IntersectionObserver(entries => {
+      for (const entry of entries) (entry.target as HTMLElement).style.animationPlayState = entry.isIntersecting ? 'running' : 'paused'
+    }, { root: calm ? null : sceneWorld, rootMargin: '100px' })
+    for (const element of decorations) visibility.observe(element)
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', resize)
+    measure()
     update()
-    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', resize); cancelAnimationFrame(frame); clearTimeout(scrollTimer); world.current?.classList.remove('traveling') }
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', resize)
+      cancelAnimationFrame(frame)
+      clearTimeout(scrollTimer)
+      sceneWorld.classList.remove('traveling')
+      visibility.disconnect()
+      for (const element of decorations) element.style.removeProperty('animation-play-state')
+    }
   }, [calm])
   useEffect(() => {
     const visitHash = () => { const aliases: Record<string, string> = { about: 'band', forest: 'band', transmission: 'wasteland', sanctuary: 'portal' }; const hash = location.hash.slice(1); const index = chapters.findIndex(c => c.id === (aliases[hash] || hash)); if (index >= 0) requestAnimationFrame(() => goTo(index, true)) }

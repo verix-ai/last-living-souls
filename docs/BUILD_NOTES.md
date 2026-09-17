@@ -137,3 +137,11 @@ The GoHighLevel integration runs server-side through the local Vite middleware a
 - Removed chapter-specific sprite sizes in booking and landscape introduction/show scenes. All chapters now inherit one viewport-based band size from the world, preserving the walking-to-performance transition.
 - Mobile booking reserves a clear lane based on the same band and ground dimensions. The form scrolls internally only when a short viewport needs it; characters are never shrunk to make the form fit.
 - Verified booking at 390×667, 375×568, 390×844, and 844×390; confirmed identical 76px scale in Shows, Booking, and Performance on the compact phone, clear form/character spacing, and reachable submit control. Production build passes.
+
+
+### Scroll rendering optimization
+- Cache scene dimensions on resize; the scroll frame no longer reads layout geometry or rewrites scene/card widths.
+- Apply transforms directly to the camera, heading, and eight parallax layers instead of changing inherited CSS properties on the entire world. Scope arrival and walking-frame variables to the ensemble, and update threshold state only when it changes.
+- Pause offscreen card/ship/star animations using IntersectionObserver, with a 100px margin so they resume before entry. Keep visible animation, parallax, art, and sprite proportions unchanged.
+- Height-only viewport changes no longer call scrollTo, avoiding interference with mobile browser chrome/native momentum. Width/orientation changes still preserve journey progress.
+- Verified mobile scene positions against the original camera/parallax formulas, offscreen pause/resume, finale assembly/audio/speakers, still-mode round trip, booking clearance, and unchanged scrollY through a 390×667 → 390×727 resize. Build passes. No measured FPS claim; physical-device performance can vary.
